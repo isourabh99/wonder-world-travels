@@ -42,7 +42,7 @@ export const LATEST_BLOGS: BlogPost[] = [
       "Which Swiss scenic train ride should you choose for your European holiday? We break down route highlights, gourmet dining, and photo viewpoints.",
     category: "International Travel",
     author: {
-      name: "Elena Vance",
+      name: "Elena Vances",
       avatarUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80",
       role: "European Destination Curator",
     },
