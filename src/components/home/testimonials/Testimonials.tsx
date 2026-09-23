@@ -68,8 +68,8 @@ export const Testimonials: React.FC<TestimonialsProps> = ({
           </div>
 
           {/* Social Proof Trust Badges Bar */}
-          <div className="flex flex-wrap sm:flex-nowrap items-center gap-4 bg-gray-50 border border-border/80 p-4 rounded-2xl shadow-xs shrink-0">
-            <div className="flex items-center gap-3 pr-4 border-r border-border/80">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 bg-gray-50 border border-border/80 p-4 rounded-2xl shadow-xs shrink-0 w-full lg:w-auto">
+            <div className="flex items-center gap-3 pr-0 sm:pr-4 border-b sm:border-b-0 sm:border-r border-border/80 pb-3 sm:pb-0 w-full sm:w-auto">
               <div className="flex flex-col">
                 <div className="flex items-center gap-1">
                   {[...Array(5)].map((_, i) => (
@@ -83,8 +83,8 @@ export const Testimonials: React.FC<TestimonialsProps> = ({
               </div>
             </div>
 
-            <div className="flex items-center gap-2 pl-1">
-              <Award className="w-8 h-8 text-primary shrink-0" />
+            <div className="flex items-center gap-2 pl-0 sm:pl-1">
+              <Award className="w-7 h-7 sm:w-8 sm:h-8 text-primary shrink-0" />
               <div className="text-xs">
                 <span className="font-bold text-foreground block">TripAdvisor 2026</span>
                 <span className="text-muted">Travelers’ Choice Winner</span>

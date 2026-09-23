@@ -197,7 +197,7 @@ export const Hero: React.FC = () => {
             {/* Animated Wrapper keyed on currentIndex to trigger smooth slide-up from below */}
             <div key={currentIndex} className="space-y-5">
               {/* Destination Title (Massive uppercase bold display) */}
-              <h1 className="animate-slide-up-1 text-5xl sm:text-6xl xl:text-7xl font-black uppercase tracking-tight text-white leading-none font-sans drop-shadow-lg">
+              <h1 className="animate-slide-up-1 text-4xl sm:text-6xl xl:text-7xl font-black uppercase tracking-tight text-white leading-none font-sans drop-shadow-lg break-words">
                 {currentSlide.name}
               </h1>
 

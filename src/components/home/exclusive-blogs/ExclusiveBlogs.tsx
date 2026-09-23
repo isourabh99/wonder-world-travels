@@ -179,13 +179,13 @@ export const ExclusiveBlogs: React.FC = () => {
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-white pt-10 pb-0 ">
+    <section className="relative w-full overflow-hidden bg-white pt-6 sm:pt-10 pb-0">
       {/* Outer arched dark blue container */}
-      <div className="max-w-8xl mx-auto ">
-        <div className="relative rounded-t-[36px] sm:rounded-t-[48px] border-t-2 border-blue-400/40 border-x border-blue-500/20 bg-gradient-to-b from-[#071d3a] via-[#0a2b55] to-[#041226] pt-10 sm:pt-14 pb-12 shadow-2xl overflow-hidden">
+      <div className="max-w-8xl mx-auto px-2 sm:px-6 lg:px-8">
+        <div className="relative rounded-t-[32px] sm:rounded-t-[48px] border-t-2 border-blue-400/40 border-x border-blue-500/20 bg-gradient-to-b from-[#071d3a] via-[#0a2b55] to-[#041226] pt-8 sm:pt-14 pb-10 sm:pb-12 shadow-2xl overflow-hidden">
           
           {/* Inner Dashed Border framing */}
-          <div className="pointer-events-none absolute inset-2.5 sm:inset-4 md:inset-6 rounded-t-[28px] sm:rounded-t-[40px] border-2 border-dashed border-sky-400/40 border-b-0 z-20" />
+          <div className="pointer-events-none absolute inset-2 sm:inset-4 md:inset-6 rounded-t-[24px] sm:rounded-t-[40px] border-2 border-dashed border-sky-400/40 border-b-0 z-20" />
 
           {/* Subtle Ambient Radial Light at top */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 max-w-4xl h-48 bg-sky-500/15 blur-3xl pointer-events-none rounded-full" />
@@ -193,18 +193,18 @@ export const ExclusiveBlogs: React.FC = () => {
           {/* ========================================================
               1. TOP SECTION: WHO'S COMING ALONG (TRAVEL PERSONAS)
           ======================================================== */}
-          <div className="relative z-10 px-4 text-center">
+          <div className="relative z-10 px-2 sm:px-4 text-center">
             {/* Header with decorative horizontal lines */}
-            <div className="flex items-center justify-center gap-3 sm:gap-6 mb-8">
-              <div className="h-[1px] w-12 sm:w-28 bg-gradient-to-r from-transparent to-white/30" />
-              <h2 className="text-xs sm:text-sm font-semibold tracking-[0.25em] text-white/90 uppercase font-sans">
+            <div className="flex items-center justify-center gap-2 sm:gap-6 mb-6 sm:mb-8">
+              <div className="h-[1px] w-6 sm:w-20 md:w-28 bg-gradient-to-r from-transparent to-white/30" />
+              <h2 className="text-[11px] sm:text-sm font-semibold tracking-[0.18em] sm:tracking-[0.25em] text-white/90 uppercase font-sans whitespace-nowrap">
                 WHO&apos;S COMING ALONG
               </h2>
-              <div className="h-[1px] w-12 sm:w-28 bg-gradient-to-l from-transparent to-white/30" />
+              <div className="h-[1px] w-6 sm:w-20 md:w-28 bg-gradient-to-l from-transparent to-white/30" />
             </div>
 
-            {/* Persona Circle Avatars */}
-            <div className="flex items-center justify-center gap-4 sm:gap-8 md:gap-10 overflow-x-auto no-scrollbar py-2">
+            {/* Persona Circle Avatars (smooth scroll on mobile, centered on desktop) */}
+            <div className="flex items-center justify-start sm:justify-center gap-3 sm:gap-8 md:gap-10 overflow-x-auto no-scrollbar py-2 px-2 sm:px-0">
               {PERSONAS.map((persona) => {
                 const isActive = selectedPersona === persona.id;
                 return (
@@ -280,7 +280,7 @@ export const ExclusiveBlogs: React.FC = () => {
             </div>
 
             {/* Carousel Container with Arrows */}
-            <div className="relative max-w-8xl mx-auto px-4 sm:px-10">
+            <div className="relative max-w-8xl mx-auto px-2 sm:px-10">
               {/* Left Arrow Button */}
               <button
                 type="button"
@@ -304,13 +304,13 @@ export const ExclusiveBlogs: React.FC = () => {
               {/* Horizontal Blog Cards Track */}
               <div
                 ref={carouselRef}
-                className="flex items-center gap-4 sm:gap-5 overflow-x-auto no-scrollbar scroll-smooth py-3 px-2 sm:px-4"
+                className="flex items-center gap-3.5 sm:gap-5 overflow-x-auto no-scrollbar scroll-smooth py-3 px-2 sm:px-4"
               >
                 {filteredBlogs.map((blog) => (
                   <Link
                     key={blog.id}
                     href={`/blogs/${blog.slug}`}
-                    className="group relative flex items-center gap-3.5 bg-[#092448]/95 hover:bg-[#0d3466] border border-blue-600/40 hover:border-sky-400/60 rounded-2xl p-2.5 sm:p-3 transition-all duration-300 shadow-lg hover:shadow-blue-950/70 min-w-[310px] sm:min-w-[340px] max-w-[360px] shrink-0 cursor-pointer"
+                    className="group relative flex items-center gap-3 sm:gap-3.5 bg-[#092448]/95 hover:bg-[#0d3466] border border-blue-600/40 hover:border-sky-400/60 rounded-2xl p-2 sm:p-3 transition-all duration-300 shadow-lg hover:shadow-blue-950/70 min-w-[275px] sm:min-w-[340px] max-w-[360px] shrink-0 cursor-pointer"
                   >
                     {/* Thumbnail Image */}
                     <div className="relative w-24 h-20 sm:w-28 sm:h-20 rounded-xl overflow-hidden shrink-0 bg-blue-950">
