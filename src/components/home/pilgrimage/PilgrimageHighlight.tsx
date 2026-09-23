@@ -12,7 +12,7 @@ export const PilgrimageHighlight: React.FC = () => {
         ॐ
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column: Visual Showcase */}
           <div className="lg:col-span-6 relative">

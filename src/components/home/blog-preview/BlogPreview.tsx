@@ -17,7 +17,7 @@ export const BlogPreview: React.FC<BlogPreviewProps> = ({
 }) => {
   return (
     <section id="blogs" className="py-20 lg:py-24 bg-gray-50/50 border-b border-border/60">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <SectionHeading
             align="left"

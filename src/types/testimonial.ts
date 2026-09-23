@@ -8,4 +8,8 @@ export interface Testimonial {
   date: string;
   quote: string;
   verified: boolean;
+  category?: string;
+  tripImage?: string;
+  highlight?: string;
+  travelerType?: string;
 }

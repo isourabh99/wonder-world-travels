@@ -41,7 +41,7 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({
         role="region"
         aria-label="Mega Menu"
       >
-        <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
             {/* Nav Columns (takes 8-9 cols depending on promo) */}
             <div
