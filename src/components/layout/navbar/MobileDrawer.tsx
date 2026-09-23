@@ -6,6 +6,12 @@ import Image from "next/image";
 import { X, ChevronDown, Phone, ArrowRight, Sparkles } from "lucide-react";
 import { NavItem } from "@/types/navigation";
 import { Button, ShimmerButton } from "@/components/ui/button";
+import {
+  CompassRoseDoodle,
+  PaperAirplaneDoodle,
+  SparkleDoodle,
+  AnimatedDottedWall,
+} from "@/components/ui/scrapbook";
 
 interface MobileDrawerProps {
   isOpen: boolean;
@@ -37,9 +43,16 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
       />
 
       {/* Slide-in Mobile Drawer */}
-      <div className="fixed inset-y-0 right-0 w-full max-w-sm bg-white shadow-2xl z-50 flex flex-col h-full animate-slide-left border-l border-border">
+      <div className="fixed inset-y-0 right-0 w-full max-w-sm bg-white shadow-2xl z-50 flex flex-col h-full animate-slide-left border-l border-border overflow-hidden">
+        {/* Animated Dotted Wall Background inside Drawer */}
+        <AnimatedDottedWall className="opacity-30 z-0 pointer-events-none" dotSize={2} gap={18} />
+
+        {/* Floating Doodle Accents */}
+        <CompassRoseDoodle className="absolute bottom-20 right-4 w-20 h-20 text-sky-500/20 pointer-events-none z-0" />
+        <PaperAirplaneDoodle className="absolute top-16 left-4 w-16 h-16 text-sky-400/25 pointer-events-none z-0" />
+
         {/* Header with logo.webp & Close Button */}
-        <div className="flex items-center justify-between flex-nowrap px-4 sm:px-6 py-3.5 border-b border-border bg-slate-50 shrink-0">
+        <div className="flex items-center justify-between flex-nowrap px-4 sm:px-6 py-3.5 border-b border-border bg-slate-50 shrink-0 relative z-10">
           <Link href="/" onClick={onClose} className="flex items-center shrink-0">
             <Image
               src="/logo.webp"
@@ -60,7 +73,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
         </div>
 
         {/* Scrollable Nav Items Accordion */}
-        <div className="flex-1 overflow-y-auto px-5 py-3 divide-y divide-border/60">
+        <div className="flex-1 overflow-y-auto px-5 py-3 divide-y divide-border/60 relative z-10">
           {navItems.map((item) => {
             const isExpanded = expandedId === item.id;
             const hasChildren = item.hasMegaMenu && item.megaMenu;
@@ -73,7 +86,9 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                       onClick={() => toggleAccordion(item.id)}
                       className="flex items-center justify-between w-full py-2 text-left font-medium text-slate-800 hover:text-primary transition-colors text-base"
                     >
-                      <span>{item.label}</span>
+                      <span className="flex items-center gap-1.5">
+                        {item.label}
+                      </span>
                       <ChevronDown
                         className={`w-4 h-4 text-muted transition-transform duration-200 ${
                           isExpanded ? "rotate-180 text-primary" : ""
@@ -82,10 +97,11 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                     </button>
 
                     {isExpanded && item.megaMenu && (
-                      <div className="pl-3 pr-2 py-3 space-y-4 text-sm bg-slate-50/80 rounded-2xl my-2 border border-border/60">
+                      <div className="pl-3 pr-2 py-3 space-y-4 text-sm bg-sky-50/60 rounded-2xl my-2 border border-sky-100 relative">
                         {item.megaMenu.columns.map((column, colIdx) => (
                           <div key={colIdx} className="space-y-1.5">
-                            <span className="text-[11px] font-bold uppercase tracking-wider text-primary block">
+                            <span className="text-[11px] font-bold uppercase tracking-wider text-primary flex items-center gap-1">
+                              <SparkleDoodle className="w-3 h-3 text-sky-500" />
                               {column.title}
                             </span>
                             <ul className="space-y-1 pl-1">
@@ -144,7 +160,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
         </div>
 
         {/* Footer Helpline & Enquire CTA */}
-        <div className="p-5 border-t border-border bg-slate-50 space-y-3">
+        <div className="p-5 border-t border-border bg-slate-50 space-y-3 relative z-10">
           <div className="flex items-center gap-2.5 text-xs text-slate-600">
             <Phone className="w-4 h-4 text-primary shrink-0" />
             <span>24/7 Helpline: <a href="tel:+918588824351" className="font-bold text-slate-900 hover:text-primary transition-colors">+91 85888-24351</a></span>

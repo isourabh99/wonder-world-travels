@@ -6,6 +6,13 @@ import Image from "next/image";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { MegaMenuData } from "@/types/navigation";
 import { Badge } from "@/components/ui/badge";
+import {
+  CompassRoseDoodle,
+  PaperAirplaneDoodle,
+  TapeAccent,
+  SparkleDoodle,
+  AnimatedDottedWall,
+} from "@/components/ui/scrapbook";
 
 interface MegaMenuProps {
   data: MegaMenuData;
@@ -35,13 +42,20 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({
 
       {/* Full-width modern white panel beneath navbar */}
       <div
-        className="absolute top-full left-0 right-0 w-full bg-white shadow-2xl z-50 animate-slide-down border-t border-slate-100/80"
+        className="absolute top-full left-0 right-0 w-full bg-white shadow-2xl z-50 animate-slide-down border-t border-slate-100/80 overflow-hidden"
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         role="region"
         aria-label="Mega Menu"
       >
-        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Animated Dotted Wall background inside Mega Menu */}
+        <AnimatedDottedWall className="opacity-40 pointer-events-none z-0" dotSize={2} gap={20} />
+
+        {/* Floating Vector Accents inside Mega Menu */}
+        <CompassRoseDoodle className="absolute -top-4 right-12 w-20 h-20 text-sky-500/25 pointer-events-none z-0" />
+        <PaperAirplaneDoodle className="absolute bottom-4 left-8 w-20 h-20 text-sky-400/30 pointer-events-none z-0" />
+
+        <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
             {/* Nav Columns (takes 8-9 cols depending on promo) */}
             <div
@@ -52,7 +66,7 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({
               {data.columns.map((column, colIdx) => (
                 <div key={colIdx} className="space-y-4">
                   <h4 className="text-xs font-bold tracking-wider uppercase text-primary border-b border-slate-100 pb-2 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
+                    <SparkleDoodle className="w-4 h-4 text-sky-500 inline-block" />
                     {column.title}
                   </h4>
                   <ul className="space-y-3">
@@ -61,7 +75,7 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({
                         <Link
                           href={item.href}
                           onClick={onClose}
-                          className="group block p-2 -mx-2 rounded-xl transition-colors duration-200 hover:bg-primary-light"
+                          className="group block p-2 -mx-2 rounded-xl transition-colors duration-200 hover:bg-sky-50/80"
                         >
                           <div className="flex items-center justify-between gap-2">
                             <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
@@ -97,6 +111,9 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({
             {data.promoCard && (
               <div className="md:col-span-4 lg:col-span-3">
                 <div className="relative rounded-2xl overflow-hidden border border-border bg-gray-50 group hover:shadow-lg transition-all duration-300">
+                  {/* Tape Accent on Promo Card */}
+                  <TapeAccent className="-top-2 -right-3 w-14 h-5 bg-amber-100/80 border border-amber-200/90 rotate-[12deg] z-20" />
+
                   <div className="relative h-44 w-full overflow-hidden">
                     <Image
                       src={data.promoCard.imageUrl}

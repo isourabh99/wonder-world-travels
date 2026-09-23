@@ -3,6 +3,19 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  PaperAirplaneDoodle,
+  CompassRoseDoodle,
+  CameraDoodle,
+  PassportStampDoodle,
+  SparkleDoodle,
+  HotAirBalloonDoodle,
+  GlobeDoodle,
+  SuitcaseDoodle,
+  MountainSunDoodle,
+  ExplorerBadgeDoodle,
+  AnimatedDottedWall,
+} from "@/components/ui/scrapbook";
 
 const ALL_ASSETS_TO_PRELOAD = {
   images: [
@@ -107,11 +120,55 @@ export const WelcomeSplash: React.FC = () => {
           }}
           className="fixed inset-0 z-[99999] bg-white flex flex-col items-center justify-center overflow-hidden select-none text-slate-900"
         >
-          {/* Subtle Ambient Sky Background Glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-sky-50/80 rounded-full blur-3xl pointer-events-none -z-10" />
+          {/* Animated Dotted Wall Grid Background */}
+          <AnimatedDottedWall className="opacity-80 z-0" dotColor="rgba(56, 189, 248, 0.3)" />
 
-          {/* Center Stage Container */}
-          <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 space-y-6 max-w-lg mx-auto">
+          {/* Subtle Ambient Sky Background Glow */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-sky-50/80 rounded-full blur-3xl pointer-events-none z-0" />
+
+          {/* ========================================================
+              SCRAPBOOK VECTOR ANIMATION DOODLES AROUND SCREEN
+          ======================================================== */}
+          {/* Top Left: Vintage Rotating Compass */}
+          <div className="absolute top-8 left-8 sm:top-12 sm:left-12 z-10 pointer-events-none">
+            <CompassRoseDoodle className="w-24 h-24 sm:w-28 sm:h-28 text-sky-500 opacity-80" />
+          </div>
+
+          {/* Top Right: Flying Paper Airplane with Flight Trail */}
+          <div className="absolute top-6 right-6 sm:top-10 sm:right-10 z-10 pointer-events-none">
+            <PaperAirplaneDoodle className="w-28 h-28 sm:w-32 sm:h-32 text-sky-400 opacity-90" />
+          </div>
+
+          {/* Bottom Left: Floating Hot Air Balloon */}
+          <div className="absolute bottom-8 left-8 sm:bottom-12 sm:left-12 z-10 pointer-events-none">
+            <HotAirBalloonDoodle className="w-24 h-28 sm:w-28 sm:h-32 text-sky-500 opacity-85" />
+          </div>
+
+          {/* Bottom Right: Orbiting Hand-Drawn Globe */}
+          <div className="absolute bottom-8 right-8 sm:bottom-12 sm:right-12 z-10 pointer-events-none">
+            <GlobeDoodle className="w-24 h-24 sm:w-28 sm:h-28 text-sky-500 opacity-80" />
+          </div>
+
+          {/* Middle Left: Passport Stamp Badge */}
+          <div className="absolute top-1/2 -translate-y-1/2 left-6 hidden lg:block z-10 pointer-events-none">
+            <PassportStampDoodle text="WELCOME • 2026" className="w-32 h-32 text-sky-600 opacity-75" />
+          </div>
+
+          {/* Middle Right: Certified Explorer Sticker Badge */}
+          <div className="absolute top-1/2 -translate-y-1/2 right-6 hidden lg:block z-10 pointer-events-none">
+            <ExplorerBadgeDoodle text="LUXURY • TRAVELS" className="w-28 h-28 text-sky-500 opacity-75" />
+          </div>
+
+          {/* Floating Sparkles around center */}
+          <SparkleDoodle className="absolute top-24 left-1/3 w-8 h-8 text-sky-400 z-10" />
+          <SparkleDoodle className="absolute bottom-24 right-1/3 w-7 h-7 text-amber-400 z-10" />
+          <CameraDoodle className="absolute top-16 left-1/2 -translate-x-1/2 w-16 h-16 text-slate-700/60 hidden sm:block z-10" />
+          <MountainSunDoodle className="absolute bottom-20 left-1/3 w-28 h-20 text-sky-600/60 hidden md:block z-10" />
+
+          {/* ========================================================
+              CENTER STAGE LOGO & PROGRESS STACK
+          ======================================================== */}
+          <div className="relative z-20 flex flex-col items-center justify-center text-center px-4 space-y-6 max-w-lg mx-auto">
             
             {/* Exact Logo Image Container with Motion Reveal */}
             <motion.div
