@@ -18,6 +18,13 @@ import {
 import { TESTIMONIALS } from "@/data/testimonials";
 import { Testimonial } from "@/types/testimonial";
 import { ShimmerButton } from "@/components/ui/button";
+import {
+  CameraDoodle,
+  TapeAccent,
+  SparkleDoodle,
+  PassportStampDoodle,
+  AnimatedDottedWall,
+} from "@/components/ui/scrapbook";
 
 interface TestimonialsProps {
   testimonials?: Testimonial[];
@@ -42,6 +49,14 @@ export const Testimonials: React.FC<TestimonialsProps> = ({
 
   return (
     <section id="testimonials" className="py-20 lg:py-28 bg-white border-b border-border/60 relative overflow-hidden">
+      {/* Animated Dotted Wall Background */}
+      <AnimatedDottedWall className="opacity-70" />
+
+      {/* Scrapbook Vector Accents */}
+      <CameraDoodle className="absolute top-12 right-12 w-16 h-16 text-slate-700/60 hidden lg:block z-0" />
+      <PassportStampDoodle text="5 ★ REVIEWED" className="absolute top-1/2 -left-4 w-28 h-28 text-sky-600/60 hidden xl:block z-0" />
+      <SparkleDoodle className="absolute top-28 left-1/4 w-8 h-8 text-sky-400 z-0" />
+
       {/* Subtle atmospheric accents on pure white */}
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none -translate-y-1/2" />
       <div className="absolute top-1/4 right-0 w-96 h-96 bg-sky-100/50 rounded-full blur-3xl pointer-events-none" />
@@ -58,7 +73,7 @@ export const Testimonials: React.FC<TestimonialsProps> = ({
               <span>Verified Traveler Stories</span>
             </div>
 
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-[1.15]">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-[1.15] relative">
               Echoes of Wonder From{" "}
               <span className="text-primary italic">Our Discerning Guests</span>
             </h2>
@@ -69,7 +84,8 @@ export const Testimonials: React.FC<TestimonialsProps> = ({
           </div>
 
           {/* Social Proof Trust Badges Bar */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 bg-gray-50 border border-border/80 p-4 rounded-2xl shadow-xs shrink-0 w-full lg:w-auto">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 bg-gray-50 border border-border/80 p-4 rounded-2xl shadow-xs shrink-0 w-full lg:w-auto relative">
+            <TapeAccent className="-top-3 -right-2 w-14 h-5" />
             <div className="flex items-center gap-3 pr-0 sm:pr-4 border-b sm:border-b-0 sm:border-r border-border/80 pb-3 sm:pb-0 w-full sm:w-auto">
               <div className="flex flex-col">
                 <div className="flex items-center gap-1">

@@ -13,6 +13,12 @@ import {
 } from "lucide-react";
 import { HERO_SLIDES, HeroSlide } from "@/data/heroSlides";
 import { ShimmerButton } from "@/components/ui/button";
+import {
+  PaperAirplaneDoodle,
+  CompassRoseDoodle,
+  SparkleDoodle,
+  AnimatedDottedWall,
+} from "@/components/ui/scrapbook";
 
 export const Hero: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -78,6 +84,19 @@ export const Hero: React.FC = () => {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
+      {/* Animated Dotted Wall Background */}
+      <AnimatedDottedWall className="opacity-40 z-10" dotColor="rgba(56, 189, 248, 0.4)" />
+
+      {/* Scrapbook Vector Accents */}
+      <div className="absolute top-8 right-12 z-30 pointer-events-none hidden md:block">
+        <PaperAirplaneDoodle className="w-28 h-28 text-sky-400 opacity-80" />
+      </div>
+      <div className="absolute bottom-20 left-8 z-30 pointer-events-none hidden lg:block">
+        <CompassRoseDoodle className="w-24 h-24 text-sky-400/40" />
+      </div>
+      <div className="absolute top-24 left-1/3 z-30 pointer-events-none">
+        <SparkleDoodle className="w-6 h-6 text-sky-300" />
+      </div>
       {/* ========================================================
           1. FULL-BLEED BACKGROUND BANNER WITH CROSS-FADE
       ======================================================== */}

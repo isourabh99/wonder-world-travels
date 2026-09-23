@@ -3,10 +3,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { Sparkles, ArrowRight, ShieldCheck, HeartHandshake, CheckCircle2 } from "lucide-react";
 import { Button, ShimmerButton } from "@/components/ui/button";
+import {
+  MountainSunDoodle,
+  TapeAccent,
+  CurvedArrowDoodle,
+  AnimatedDottedWall,
+} from "@/components/ui/scrapbook";
 
 export const PilgrimageHighlight: React.FC = () => {
   return (
     <section id="pilgrimage" className="py-20 lg:py-24 bg-primary-light border-y border-primary/15 relative overflow-hidden">
+      {/* Animated Dotted Wall Background */}
+      <AnimatedDottedWall className="opacity-60" />
+
+      {/* Scrapbook Vector Accents */}
+      <MountainSunDoodle className="absolute top-8 left-10 w-28 h-20 text-sky-600/70 hidden lg:block z-0" />
+      <CurvedArrowDoodle className="absolute bottom-12 right-12 w-20 h-20 text-sky-500/60 hidden xl:block z-0" />
+
       {/* Decorative background watermark */}
       <div className="absolute -right-20 -bottom-20 opacity-5 pointer-events-none font-serif text-[280px] font-bold text-primary select-none">
         ॐ

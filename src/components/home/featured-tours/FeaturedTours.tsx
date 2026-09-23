@@ -27,6 +27,13 @@ import {
   DetailedTourItem,
 } from "@/data/featured-tours-data";
 import { ShimmerButton } from "@/components/ui/button";
+import {
+  CameraDoodle,
+  PassportStampDoodle,
+  TapeAccent,
+  SparkleDoodle,
+  AnimatedDottedWall,
+} from "@/components/ui/scrapbook";
 
 export const FeaturedTours: React.FC = () => {
   const getCategoryIcon = (iconName: TourCategoryOverview["iconName"]) => {
@@ -60,6 +67,9 @@ export const FeaturedTours: React.FC = () => {
         key={tour.id}
         className="group bg-white rounded-3xl border border-slate-200 hover:border-sky-400 p-6 flex flex-col justify-between shadow-xs hover:shadow-xl transition-all duration-300 relative overflow-hidden"
       >
+        {/* Scrapbook Tape Accent */}
+        <TapeAccent className="-top-2 -right-3 w-16 h-6 bg-amber-100/80 border border-amber-200/90 rotate-[14deg] z-20" />
+
         <div className="space-y-4">
           {/* Card Media Header */}
           <div className="relative h-48 sm:h-52 w-full rounded-2xl overflow-hidden bg-slate-100">
@@ -145,6 +155,9 @@ export const FeaturedTours: React.FC = () => {
 
   return (
     <section id="featured-tours" className="py-20 lg:py-28 bg-white border-b border-slate-200 relative overflow-hidden">
+      {/* Animated Dotted Wall Background */}
+      <AnimatedDottedWall className="opacity-70" />
+
       {/* Background Soft Sky Blue Glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-sky-50/70 rounded-full blur-3xl pointer-events-none -z-10" />
 

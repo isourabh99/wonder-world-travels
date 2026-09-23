@@ -6,6 +6,13 @@ import { ArrowRight, Compass, Play } from "lucide-react";
 import { Destination } from "@/types/destination";
 import { TOP_DESTINATIONS } from "@/data/destinations";
 import { SectionHeading } from "@/components/ui/section-heading";
+import {
+  PaperAirplaneDoodle,
+  PassportStampDoodle,
+  TapeAccent,
+  SparkleDoodle,
+  AnimatedDottedWall,
+} from "@/components/ui/scrapbook";
 
 interface DestinationsGridProps {
   destinations?: Destination[];
@@ -15,8 +22,16 @@ export const DestinationsGrid: React.FC<DestinationsGridProps> = ({
   destinations = TOP_DESTINATIONS,
 }) => {
   return (
-    <section id="destinations" className="py-20 lg:py-24 bg-gray-50/60 border-b border-border/60">
-      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="destinations" className="py-20 lg:py-24 bg-gray-50/60 border-b border-border/60 relative overflow-hidden">
+      {/* Animated Dotted Wall Background */}
+      <AnimatedDottedWall className="opacity-60" />
+
+      {/* Scrapbook Floating Vector Accents */}
+      <div className="absolute top-10 right-10 pointer-events-none hidden md:block z-10">
+        <PaperAirplaneDoodle className="w-24 h-24 text-sky-500 opacity-60" />
+      </div>
+
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <SectionHeading
           eyebrow="Cinematic Landscapes"
           title="Top Destinations To"
@@ -38,6 +53,8 @@ export const DestinationsGrid: React.FC<DestinationsGridProps> = ({
                   isLarge ? "sm:col-span-2 lg:col-span-2 h-[340px] sm:h-[400px]" : "h-[340px] sm:h-[400px]"
                 }`}
               >
+                {/* Scrapbook Corner Tape Accent */}
+                <TapeAccent className="-top-1 -right-2 w-16 h-6 bg-white/70 border border-slate-200/80 rotate-[15deg] z-20" />
                 {/* Background Looping HD Pexels Video Stream */}
                 {dest.videoUrl ? (
                   <video

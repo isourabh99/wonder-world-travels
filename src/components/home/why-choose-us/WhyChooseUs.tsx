@@ -16,6 +16,13 @@ import {
 } from "lucide-react";
 import { WHY_CHOOSE_US_ITEMS, WhyChooseUsItem } from "@/data/why-choose-us";
 import { ShimmerButton } from "@/components/ui/button";
+import {
+  SuitcaseDoodle,
+  ExplorerBadgeDoodle,
+  TapeAccent,
+  SparkleDoodle,
+  AnimatedDottedWall,
+} from "@/components/ui/scrapbook";
 
 interface WhyChooseUsProps {
   items?: WhyChooseUsItem[];
@@ -45,6 +52,14 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({
 
   return (
     <section id="why-choose-us" className="py-20 lg:py-28 bg-white border-b border-border/60 relative overflow-hidden">
+      {/* Animated Dotted Wall Background */}
+      <AnimatedDottedWall className="opacity-70" />
+
+      {/* Scrapbook Vector Accents */}
+      <SuitcaseDoodle className="absolute top-10 right-12 w-20 h-20 text-slate-700/60 hidden xl:block z-0" />
+      <ExplorerBadgeDoodle text="100% TRUSTED" className="absolute bottom-12 left-8 w-28 h-28 text-sky-500/70 hidden lg:block z-0" />
+      <SparkleDoodle className="absolute top-24 left-1/3 w-8 h-8 text-sky-400 z-0" />
+
       {/* Background Soft Accent Glows */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-sky-50 rounded-full blur-3xl pointer-events-none -z-10" />
 
@@ -53,14 +68,14 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({
         {/* ========================================================
             1. SECTION HEADER WITH STAT COUNTERS
         ======================================================== */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 relative">
           <div className="space-y-4 max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold tracking-wider uppercase">
               <Award className="w-3.5 h-3.5 text-primary" />
               <span>The Wonder World Distinction</span>
             </div>
 
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-[1.15]">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground leading-[1.15] relative">
               Why Discerning Travelers{" "}
               <span className="text-primary italic">Entrust Us With Their Journeys</span>
             </h2>
@@ -71,8 +86,9 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({
           </div>
 
           {/* Quick Metrics Strip */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-50 border border-border/80 p-3 sm:p-4 rounded-2xl shrink-0">
-            <div className="p-2 sm:p-3 text-center sm:text-left sm:border-r border-border/80">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-50 border border-border/80 p-3 sm:p-4 rounded-2xl shrink-0 relative">
+            <TapeAccent className="-top-3 -right-3 w-16 h-5" />
+            <div className="p-2 sm:p-3 text-center sm:text-left sm:border-r border-border/80 relative">
               <span className="font-serif text-2xl sm:text-3xl font-bold text-primary block leading-none">
                 50K+
               </span>

@@ -16,6 +16,13 @@ import {
 import { TOURISM_APPROACH_DATA, TourismServiceItem } from "@/data/tourism-approach";
 import { ShimmerButton } from "@/components/ui/button";
 import { EnquireModal } from "@/components/layout/navbar/EnquireModal";
+import {
+  CompassRoseDoodle,
+  PassportStampDoodle,
+  TapeAccent,
+  SparkleDoodle,
+  AnimatedDottedWall,
+} from "@/components/ui/scrapbook";
 
 export const TourismApproach: React.FC = () => {
   const [isEnquireOpen, setIsEnquireOpen] = useState(false);
@@ -41,23 +48,36 @@ export const TourismApproach: React.FC = () => {
 
   return (
     <section className="w-full bg-white text-slate-900 py-16 sm:py-24 border-b border-slate-200 relative overflow-hidden">
+      {/* Animated Dotted Wall Background */}
+      <AnimatedDottedWall className="opacity-70" />
+
       {/* Soft Decorative Ambient Blue Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-sky-50/70 rounded-full blur-3xl pointer-events-none -z-10" />
 
-      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16">
+      {/* Scrapbook Vector Floating Accents */}
+      <div className="absolute top-12 left-8 pointer-events-none hidden lg:block">
+        <CompassRoseDoodle className="w-24 h-24 text-sky-500/30" />
+      </div>
+      <div className="absolute bottom-16 right-10 pointer-events-none hidden md:block">
+        <PassportStampDoodle text="PREMIUM • APPROVED" className="w-28 h-28 text-sky-600/40" />
+      </div>
+
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-16 relative z-10">
         
         {/* ========================================================
             SECTION HEADER
         ======================================================== */}
-        <div className="text-center max-w-3xl mx-auto space-y-4">
+        <div className="text-center max-w-3xl mx-auto space-y-4 flex flex-col items-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-50 border border-sky-200 text-sky-600 text-xs font-semibold tracking-widest uppercase">
             <Compass className="w-3.5 h-3.5 text-sky-500" />
             <span>{TOURISM_APPROACH_DATA.sectionBadge}</span>
           </div>
 
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 leading-tight">
-            {TOURISM_APPROACH_DATA.mainTitle}
-          </h2>
+          <div>
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 leading-tight">
+              {TOURISM_APPROACH_DATA.mainTitle}
+            </h2>
+          </div>
 
           <p className="text-slate-600 text-base sm:text-lg leading-relaxed pt-1">
             {TOURISM_APPROACH_DATA.description}

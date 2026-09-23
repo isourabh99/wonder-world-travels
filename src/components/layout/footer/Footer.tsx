@@ -13,6 +13,12 @@ import {
   Clock,
 } from "lucide-react";
 import { POPULAR_PACKAGE_CATEGORIES } from "@/data/popular-packages-links";
+import {
+  PaperAirplaneDoodle,
+  CompassRoseDoodle,
+  CurvedArrowDoodle,
+  TapeAccent,
+} from "@/components/ui/scrapbook";
 
 // Inline branded SVG icons for perfect reliability
 const InstagramIcon = ({ className = "w-4 h-4" }: { className?: string }) => (
@@ -65,6 +71,10 @@ export const Footer: React.FC = () => {
   return (
     <footer className="w-full min-h-screen bg-gradient-to-b from-[#051329] via-[#071d3a] to-[#020a17] text-white relative flex flex-col justify-between overflow-hidden pt-12 sm:pt-16 pb-8 border-t-2 border-sky-500/20">
       
+      {/* Scrapbook Vector Accents */}
+      <PaperAirplaneDoodle className="absolute top-10 right-14 w-24 h-24 text-sky-400/50 hidden lg:block z-0 pointer-events-none" />
+      <CompassRoseDoodle className="absolute bottom-16 right-10 w-24 h-24 text-sky-500/40 hidden xl:block z-0 pointer-events-none" />
+
       {/* ========================================================
           BACKGROUND AMBIENT CELESTIAL GLOWS & ORBS
       ======================================================== */}
@@ -80,7 +90,8 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10">
           
           {/* Col 1: Brand, Clean Newsletter, Social Media & Contact Info (span 4) */}
-          <div className="lg:col-span-4 space-y-6">
+          <div className="lg:col-span-4 space-y-6 relative">
+            <CurvedArrowDoodle className="absolute -top-6 right-4 w-14 h-14 text-sky-400/60 hidden sm:block pointer-events-none" />
             {/* Same Logo as Navbar */}
             <Link href="/" className="group inline-flex items-center gap-3 focus:outline-none">
               <div className="relative w-24 h-12 flex items-center justify-center shrink-0">

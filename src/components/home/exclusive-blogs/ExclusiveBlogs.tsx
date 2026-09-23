@@ -4,6 +4,14 @@ import React, { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import {
+  HotAirBalloonDoodle,
+  GlobeDoodle,
+  CompassRoseDoodle,
+  PaperAirplaneDoodle,
+  SparkleDoodle,
+  AnimatedDottedWall,
+} from "@/components/ui/scrapbook";
 
 interface Persona {
   id: string;
@@ -183,7 +191,15 @@ export const ExclusiveBlogs: React.FC = () => {
       {/* Outer arched dark blue container */}
       <div className="max-w-8xl mx-auto ">
         <div className="relative rounded-t-[32px] sm:rounded-t-[48px] border-t-2 border-blue-400/40 border-x border-blue-500/20 bg-gradient-to-b from-[#071d3a] via-[#0a2b55] to-[#041226] pt-8 sm:pt-14 pb-10 sm:pb-12 shadow-2xl overflow-hidden">
-          
+          {/* Animated Dotted Wall Background */}
+          <AnimatedDottedWall className="opacity-50 z-0" dotColor="rgba(56, 189, 248, 0.3)" />
+
+          {/* Scrapbook Vector Accents inside dark container */}
+          <HotAirBalloonDoodle className="absolute top-6 left-8 w-16 h-20 text-sky-400/70 hidden lg:block z-10" />
+          <GlobeDoodle className="absolute bottom-10 right-10 w-20 h-20 text-sky-400/60 hidden lg:block z-10" />
+          <PaperAirplaneDoodle className="absolute top-12 right-12 w-20 h-20 text-sky-300/80 hidden xl:block z-10" />
+          <SparkleDoodle className="absolute top-24 left-1/3 w-6 h-6 text-sky-300 z-10" />
+
           {/* Inner Dashed Border framing */}
           <div className="pointer-events-none absolute inset-2 sm:inset-4 md:inset-6 rounded-t-[24px] sm:rounded-t-[40px] border-2 border-dashed border-sky-400/40 border-b-0 z-20" />
 
