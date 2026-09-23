@@ -24,7 +24,8 @@ export default function Home() {
 
         {/* Our Approach To Tourism - Premium Services (White Background) */}
         <TourismApproach />
-
+        {/* Exclusive Travel Blogs & Curated Guides */}
+        <ExclusiveBlogs />
         {/* Handcrafted Featured Tour Packages */}
         <FeaturedTours />
 
@@ -34,8 +35,7 @@ export default function Home() {
         {/* Why Choose Us Trust Pillars */}
         <WhyChooseUs />
 
-        {/* Exclusive Travel Blogs & Curated Guides */}
-        <ExclusiveBlogs />
+
         {/* Verified Traveler Testimonials */}
         <Testimonials />
 
