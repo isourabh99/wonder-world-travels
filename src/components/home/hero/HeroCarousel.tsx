@@ -105,14 +105,14 @@ export const HeroCarousel: React.FC = () => {
       {/* Slide Context Overlay on Bottom-Left */}
       <div className="absolute bottom-16 sm:bottom-20 left-6 sm:left-10 z-20 max-w-md text-white space-y-2 pointer-events-none">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-semibold uppercase tracking-wider text-white border border-white/30">
-          <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+          <Sparkles className="w-3.5 h-3.5 text-sky-300" />
           <span>{currentSlide.badge}</span>
         </div>
         <h3 className="font-serif text-2xl sm:text-3xl font-bold leading-tight drop-shadow-md">
           {currentSlide.title}
         </h3>
         <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-200">
-          <MapPin className="w-4 h-4 text-amber-300 shrink-0" />
+          <MapPin className="w-4 h-4 text-sky-300 shrink-0" />
           <span>{currentSlide.location}, {currentSlide.country}</span>
         </div>
       </div>

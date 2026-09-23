@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Hero } from "@/components/home/hero/Hero";
 import { DestinationsGrid } from "@/components/home/destinations/DestinationsGrid";
+import { TourismApproach } from "@/components/home/tourism-approach";
 import { FeaturedTours } from "@/components/home/featured-tours/FeaturedTours";
 import { PilgrimageHighlight } from "@/components/home/pilgrimage/PilgrimageHighlight";
 import { WhyChooseUs } from "@/components/home/why-choose-us/WhyChooseUs";
@@ -21,6 +22,9 @@ export default function Home() {
         {/* Top Destinations Showcase */}
         <DestinationsGrid />
 
+        {/* Our Approach To Tourism - Premium Services (White Background) */}
+        <TourismApproach />
+
         {/* Handcrafted Featured Tour Packages */}
         <FeaturedTours />
 
@@ -30,11 +34,11 @@ export default function Home() {
         {/* Why Choose Us Trust Pillars */}
         <WhyChooseUs />
 
+        {/* Exclusive Travel Blogs & Curated Guides */}
+        <ExclusiveBlogs />
         {/* Verified Traveler Testimonials */}
         <Testimonials />
 
-        {/* Exclusive Travel Blogs & Curated Guides */}
-        <ExclusiveBlogs />
       </main>
 
       {/* Global Footer */}
@@ -42,3 +46,6 @@ export default function Home() {
     </div>
   );
 }
+
+
+

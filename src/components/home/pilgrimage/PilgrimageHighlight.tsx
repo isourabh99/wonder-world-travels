@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Sparkles, ArrowRight, ShieldCheck, HeartHandshake, CheckCircle2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button, ShimmerButton } from "@/components/ui/button";
 
 export const PilgrimageHighlight: React.FC = () => {
   return (
@@ -37,7 +37,7 @@ export const PilgrimageHighlight: React.FC = () => {
 
                 {/* Bottom caption */}
                 <div className="absolute bottom-6 left-6 right-6 text-white space-y-1">
-                  <span className="text-xs font-medium uppercase tracking-wider text-amber-300">
+                  <span className="text-xs font-medium uppercase tracking-wider text-sky-300">
                     Sacred Himalayan Sanctuary
                   </span>
                   <h4 className="font-serif text-2xl font-bold text-white">
@@ -102,15 +102,12 @@ export const PilgrimageHighlight: React.FC = () => {
             {/* Actions */}
             <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <Link href="/pilgrimage-tours">
-                <Button
-                  variant="primary"
+                <ShimmerButton
                   size="lg"
-                  pill
-                  className="w-full sm:w-auto shadow-md"
-                  rightIcon={<ArrowRight className="w-4 h-4" />}
+                  icon={<ArrowRight className="w-4 h-4 text-white shrink-0" />}
                 >
                   Explore Char Dham 2026
-                </Button>
+                </ShimmerButton>
               </Link>
               <Link href="/contact">
                 <Button

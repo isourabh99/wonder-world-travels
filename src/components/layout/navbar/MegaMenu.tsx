@@ -35,7 +35,7 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({
 
       {/* Full-width modern white panel beneath navbar */}
       <div
-        className="absolute top-full left-0 right-0 w-full bg-white border-b border-border shadow-2xl z-50 animate-slide-down"
+        className="absolute top-full left-0 right-0 w-full bg-white shadow-2xl z-50 animate-slide-down border-t border-slate-100/80"
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         role="region"
@@ -51,7 +51,7 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({
             >
               {data.columns.map((column, colIdx) => (
                 <div key={colIdx} className="space-y-4">
-                  <h4 className="text-xs font-bold tracking-wider uppercase text-primary border-b border-border pb-2 flex items-center gap-1.5">
+                  <h4 className="text-xs font-bold tracking-wider uppercase text-primary border-b border-slate-100 pb-2 flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
                     {column.title}
                   </h4>

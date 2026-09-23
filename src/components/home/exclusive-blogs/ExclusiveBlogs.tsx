@@ -181,7 +181,7 @@ export const ExclusiveBlogs: React.FC = () => {
   return (
     <section className="relative w-full overflow-hidden bg-white pt-6 sm:pt-10 pb-0">
       {/* Outer arched dark blue container */}
-      <div className="max-w-8xl mx-auto px-2 sm:px-6 lg:px-8">
+      <div className="max-w-8xl mx-auto ">
         <div className="relative rounded-t-[32px] sm:rounded-t-[48px] border-t-2 border-blue-400/40 border-x border-blue-500/20 bg-gradient-to-b from-[#071d3a] via-[#0a2b55] to-[#041226] pt-8 sm:pt-14 pb-10 sm:pb-12 shadow-2xl overflow-hidden">
           
           {/* Inner Dashed Border framing */}

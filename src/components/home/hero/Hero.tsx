@@ -1,50 +1,40 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
   ChevronLeft,
   ChevronRight,
   ArrowRight,
-  Search,
   Bookmark,
-  Compass,
   Star,
-  Volume2,
-  VolumeX,
+  Sparkles,
 } from "lucide-react";
 import { HERO_SLIDES, HeroSlide } from "@/data/heroSlides";
+import { ShimmerButton } from "@/components/ui/button";
 
 export const Hero: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [bookmarkedIds, setBookmarkedIds] = useState<Record<string, boolean>>({});
-  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const totalSlides = HERO_SLIDES.length;
   const currentSlide = HERO_SLIDES[currentIndex];
 
   // Advance to next slide
   const nextSlide = useCallback(() => {
-    setIsTransitioning(true);
     setCurrentIndex((prev) => (prev + 1) % totalSlides);
-    setTimeout(() => setIsTransitioning(false), 600);
   }, [totalSlides]);
 
   // Go to previous slide
   const prevSlide = useCallback(() => {
-    setIsTransitioning(true);
     setCurrentIndex((prev) => (prev - 1 + totalSlides) % totalSlides);
-    setTimeout(() => setIsTransitioning(false), 600);
   }, [totalSlides]);
 
   // Jump to specific slide
   const goToSlide = (idx: number) => {
-    if (idx === currentIndex) return;
-    setIsTransitioning(true);
     setCurrentIndex(idx);
-    setTimeout(() => setIsTransitioning(false), 600);
   };
 
   // Toggle bookmark for cards
@@ -56,12 +46,12 @@ export const Hero: React.FC = () => {
     }));
   };
 
-  // Automatic slide rotation every 5.5s
+  // Automatic slide rotation every 4.5 seconds
   useEffect(() => {
     if (isPaused) return;
     const interval = setInterval(() => {
       nextSlide();
-    }, 5500);
+    }, 3000);
     return () => clearInterval(interval);
   }, [isPaused, nextSlide]);
 
@@ -75,17 +65,16 @@ export const Hero: React.FC = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [nextSlide, prevSlide]);
 
-  // Determine queue of next slides for the right-side carousel
-  // Show the next 4 slides in order
-  const upcomingSlides: { slide: HeroSlide; originalIndex: number }[] = [];
-  for (let i = 1; i <= Math.min(4, totalSlides - 1); i++) {
+  // Generate ordered queue of cards (Active slide first, then upcoming slides)
+  const carouselCards: { slide: HeroSlide; originalIndex: number }[] = [];
+  for (let i = 0; i < totalSlides; i++) {
     const idx = (currentIndex + i) % totalSlides;
-    upcomingSlides.push({ slide: HERO_SLIDES[idx], originalIndex: idx });
+    carouselCards.push({ slide: HERO_SLIDES[idx], originalIndex: idx });
   }
 
   return (
     <section
-      className="relative w-full h-[calc(100vh-80px)] min-h-[660px] max-h-[980px] overflow-hidden bg-black select-none text-white"
+      className="relative w-full h-[calc(100vh-75px)] min-h-[640px] max-h-[960px] overflow-hidden bg-slate-950 select-none text-white"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -98,208 +87,200 @@ export const Hero: React.FC = () => {
           <div
             key={slide.id}
             className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              isActive ? "opacity-100 z-0" : "opacity-0 pointer-events-none -z-10"
+              isActive ? "opacity-100 z-10 pointer-events-auto" : "opacity-0 z-0 pointer-events-none"
             }`}
           >
-            <div className={`relative w-full h-full ${isActive ? "animate-ken-burns" : ""}`}>
+            {/* Background Image with subtle Ken-Burns Zoom effect */}
+            <div className="relative w-full h-full overflow-hidden">
               <Image
                 src={slide.imageUrl}
                 alt={slide.name}
                 fill
-                priority={idx === 0 || idx === 1}
-                className="object-cover object-center scale-105"
+                priority={idx === 0}
+                className={`object-cover object-center transition-transform duration-10000 ease-linear ${
+                  isActive ? "scale-108" : "scale-100"
+                }`}
                 sizes="100vw"
-                quality={90}
               />
-            </div>
 
-            {/* Gradient Overlays for optimal readability matching the design reference */}
-            {/* Left dark foggy gradient for typography */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-transparent" />
-            {/* Top subtle vignette for navbar */}
-            <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-black/70 via-black/30 to-transparent" />
-            {/* Bottom subtle shadow */}
-            <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
+              {/* Multi-layered Premium Dark Gradients for cinematic contrast */}
+              <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/50 to-transparent z-10" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-transparent to-slate-950/40 z-10" />
+            </div>
           </div>
         );
       })}
 
       {/* ========================================================
-          2. MAIN HERO CONTENT AREA (TIMELINE + LEFT INFO + RIGHT CAROUSEL)
+          2. VERTICAL TIMELINE OF 10 CIRCLES ON FAR LEFT
       ======================================================== */}
-      <div className="relative z-20 w-full h-full flex items-center py-6 sm:py-8">
-        {/* ========================================================
-            FAR-LEFT VERTICAL TIMELINE
-            - Vertical line
-            - 10 circular points (one for each slide)
-            - Active point blinks, gets bigger, and displays number
-            - Bottom counter (e.g. 01 / 10)
-        ======================================================== */}
-        <div className="absolute left-6 sm:left-10 lg:left-12 top-0 bottom-12 flex flex-col items-center justify-between z-30 pointer-events-auto">
-          {/* Vertical track line and 10 points */}
-          <div className="relative flex-1 flex flex-col items-center justify-center my-auto">
-            {/* Continuous thin vertical line */}
-            <div className="absolute top-2 bottom-2 w-[1px] bg-white/30" />
+      <div className="hidden lg:flex flex-col items-center gap-4 absolute left-6 sm:left-10 top-1/2 -translate-y-1/2 z-30 pointer-events-auto">
+        <div className="relative flex flex-col items-center gap-3.5">
+          {/* Vertical connecting background line */}
+          <div className="absolute top-2 bottom-2 w-0.5 bg-white/15 -z-10" />
 
-            {/* Timeline Dots */}
-            <div className="relative flex flex-col items-center justify-between h-[360px] sm:h-[420px] py-2">
-              {HERO_SLIDES.map((_, idx) => {
-                const isActive = idx === currentIndex;
-                const slideNumber = idx + 1;
+          {HERO_SLIDES.map((slide, idx) => {
+            const isActive = idx === currentIndex;
+            return (
+              <button
+                key={slide.id}
+                onClick={() => goToSlide(idx)}
+                className={`relative rounded-full transition-all duration-300 cursor-pointer flex items-center justify-center focus:outline-none ${
+                  isActive
+                    ? "w-4.5 h-4.5 bg-sky-400 ring-4 ring-sky-400/30 shadow-lg shadow-sky-400/50 scale-110"
+                    : "w-2.5 h-2.5 bg-white/40 hover:bg-white/80 hover:scale-125"
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+                title={`${idx + 1}. ${slide.name}`}
+              >
+                {isActive && (
+                  <span className="w-1.5 h-1.5 rounded-full bg-slate-950 inline-block" />
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
-                return (
-                  <div
-                    key={idx}
-                    className="relative flex items-center justify-center group/dot cursor-pointer"
-                    onClick={() => goToSlide(idx)}
-                    title={`Slide ${slideNumber}: ${HERO_SLIDES[idx].name}`}
-                  >
-                    {/* Active Expanded Blinking Dot with Number */}
-                    {isActive ? (
-                      <div className="relative z-10 flex items-center justify-center">
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/30 backdrop-blur-md border border-white text-white flex items-center justify-center text-xs font-bold animate-timeline-active shadow-[0_0_15px_rgba(255,255,255,0.7)] transition-all">
-                          {slideNumber}
-                        </div>
-                      </div>
-                    ) : (
-                      /* Inactive Dot */
-                      <button
-                        type="button"
-                        aria-label={`Jump to slide ${slideNumber}`}
-                        className="w-2.5 h-2.5 rounded-full bg-white/40 group-hover/dot:bg-white group-hover/dot:scale-150 transition-all duration-300 focus:outline-none"
-                      />
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Timeline Bottom Slide Counter */}
-          <div className="pt-4 flex flex-col items-center text-[11px] sm:text-xs font-mono font-bold tracking-widest text-white/70">
-            <span className="text-white text-sm font-extrabold">
-              {String(currentIndex + 1).padStart(2, "0")}
-            </span>
-            <span className="w-3 h-[1px] bg-white/40 my-1" />
-            <span>{String(totalSlides).padStart(2, "0")}</span>
+      {/* ========================================================
+          3. MAIN CONTENT OVERLAY (HERO TEXT & CAROUSEL CARDS)
+      ======================================================== */}
+      <div className="relative z-20 h-full max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 pl-6 sm:pl-16 lg:pl-24 flex flex-col justify-between py-8 sm:py-12 pointer-events-none">
+        
+        {/* Top Badging / Location Indicator */}
+        <div className="pt-2 sm:pt-4 pointer-events-auto">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-lg text-xs font-semibold uppercase tracking-widest text-sky-300">
+            <Sparkles className="w-3.5 h-3.5 animate-pulse text-sky-400" />
+            <span>Featured Luxury Expeditions</span>
           </div>
         </div>
 
-        {/* ========================================================
-            INNER GRID CONTAINER: LEFT SECTION + RIGHT CAROUSEL
-        ======================================================== */}
-        <div className="w-full pl-20 sm:pl-28 lg:pl-32 pr-6 sm:pr-10 lg:pr-14 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          {/* ========================================================
-              LEFT SECTION: SLIDE NAME & DESCRIPTION
-              WITH TRANSITION EFFECT FROM BELOW
-          ======================================================== */}
-          <div className="lg:col-span-5 xl:col-span-5 flex flex-col justify-center max-w-xl">
-            {/* Animated Wrapper keyed on currentIndex to trigger smooth slide-up from below */}
-            <div key={currentIndex} className="space-y-5">
-              {/* Destination Title (Massive uppercase bold display) */}
-              <h1 className="animate-slide-up-1 text-4xl sm:text-6xl xl:text-7xl font-black uppercase tracking-tight text-white leading-none font-sans drop-shadow-lg break-words">
-                {currentSlide.name}
-              </h1>
+        {/* Center Grid: Left Text Details + Right Carousel Track */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center my-auto">
+          
+          {/* LEFT SECTION: DESTINATION INFORMATION WITH BOTTOM-TO-TOP TRANSITIONS */}
+          <div
+            key={currentIndex}
+            className="lg:col-span-5 xl:col-span-5 space-y-4 text-left pointer-events-auto max-w-xl"
+          >
+            {/* Country / Region Tag */}
+            <div className="animate-slide-up-1 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-sky-400">
+              <span>{currentSlide.country}</span>
+              <span>•</span>
+              <span className="text-slate-300">{currentSlide.duration}</span>
+            </div>
 
-              {/* Destination Narrative Description */}
-              <p className="animate-slide-up-2 text-white/85 text-sm sm:text-base leading-relaxed line-clamp-4 sm:line-clamp-5 max-w-lg drop-shadow font-normal">
-                {currentSlide.description}
-              </p>
+            {/* Slide Title */}
+            <h1 className="animate-slide-up-1 text-4xl sm:text-6xl xl:text-7xl font-black uppercase tracking-tight text-white leading-none font-sans drop-shadow-lg break-words">
+              {currentSlide.name}
+            </h1>
 
-              {/* "Explore ->" Pill CTA Button */}
-              <div className="animate-slide-up-3 pt-3">
-                <Link
-                  href={`#explore-${currentSlide.id}`}
-                  className="inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-[#2B5B84] hover:bg-[#1E4566] text-white font-medium text-sm sm:text-base transition-all duration-300 shadow-lg shadow-black/40 hover:shadow-xl hover:translate-x-1 group/btn border border-white/10"
+            {/* Slide Description */}
+            <p className="animate-slide-up-2 text-white/85 text-sm sm:text-base leading-relaxed line-clamp-4 max-w-lg drop-shadow font-normal">
+              {currentSlide.description}
+            </p>
+
+            {/* Explore CTA Button with ShimmerButton */}
+            <div className="animate-slide-up-3 pt-2">
+              <Link href={`#explore-${currentSlide.id}`}>
+                <ShimmerButton
+                  size="lg"
+                  icon={<ArrowRight className="w-4 h-4 text-white shrink-0 group-hover/btn:translate-x-1 transition-transform" />}
                 >
-                  <span>Explore</span>
-                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
-                </Link>
-              </div>
+                  Explore Package
+                </ShimmerButton>
+              </Link>
             </div>
           </div>
 
-          {/* ========================================================
-              RIGHT SECTION: CAROUSEL SLIDESHOW
-              - Images coming from right to left
-              - Title & rating dots above each card
-              - Bookmark button on top right of each card
-              - Click card to jump to that slide
-          ======================================================== */}
-          <div className="lg:col-span-7 xl:col-span-7 flex flex-col justify-center relative overflow-visible">
-            {/* Horizontal Cards Row */}
-            <div className="flex items-center gap-5 sm:gap-6 overflow-x-hidden py-4 -mr-6 sm:-mr-10 lg:-mr-14 pl-1">
-              {upcomingSlides.map(({ slide, originalIndex }, queuePos) => {
+          {/* RIGHT SECTION: SCALED CAROUSEL CARDS TRACK */}
+          <div className="lg:col-span-7 xl:col-span-7 flex flex-col justify-center relative overflow-visible pointer-events-auto">
+            {/* Horizontal Cards Track */}
+            <div className="flex items-center gap-4 sm:gap-5 overflow-x-hidden py-6 -mr-6 sm:-mr-10 lg:-mr-14 pl-2">
+              {carouselCards.map(({ slide, originalIndex }, queuePos) => {
+                const isActiveCard = originalIndex === currentIndex;
                 const isSaved = Boolean(bookmarkedIds[slide.id]);
 
                 return (
                   <div
-                    key={slide.id}
+                    key={`${slide.id}-${originalIndex}`}
                     onClick={() => goToSlide(originalIndex)}
-                    className="flex-shrink-0 flex flex-col cursor-pointer group/card transition-transform duration-500 hover:-translate-y-2"
-                    style={{
-                      // Fluid transition for items advancing
-                      transition: "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease",
-                    }}
+                    className={`flex-shrink-0 flex flex-col cursor-pointer group/card transition-all duration-500 ${
+                      isActiveCard
+                        ? "scale-105 sm:scale-108 z-20 opacity-100"
+                        : "scale-95 opacity-75 hover:opacity-100 hover:scale-100 z-10"
+                    }`}
                   >
-                    {/* Destination Title & Dots Above the Card */}
-                    <div className="mb-2.5 px-1 flex flex-col gap-1">
-                      <span className="text-sm font-semibold text-white/95 group-hover/card:text-white drop-shadow truncate max-w-[200px] sm:max-w-[240px]">
-                        {slide.location || slide.name}
-                      </span>
-                      {/* Rating / Position Dots */}
-                      <div className="flex items-center gap-1">
+                    {/* Destination Title & Stars Above Card */}
+                    <div className="mb-2 px-1 flex flex-col gap-1">
+                      <div className="flex items-center justify-between gap-2 max-w-[200px] sm:max-w-[240px]">
+                        <span className={`text-xs sm:text-sm font-bold truncate ${
+                          isActiveCard ? "text-sky-300 drop-shadow-md" : "text-white/90"
+                        }`}>
+                          {slide.location || slide.name}
+                        </span>
+                        {isActiveCard && (
+                          <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-md bg-sky-400 text-slate-950 shadow-sm shrink-0">
+                            Active
+                          </span>
+                        )}
+                      </div>
+
+                      {/* 5-Star Rating Icons (Golden) */}
+                      <div className="flex items-center gap-0.5">
                         {[...Array(5)].map((_, i) => (
-                          <span
+                          <Star
                             key={i}
-                            className={`w-1.5 h-1.5 rounded-full ${
-                              i < slide.rating ? "bg-white/90" : "bg-white/30"
+                            className={`w-3 sm:w-3.5 h-3 sm:h-3.5 ${
+                              i < (slide.rating || 5)
+                                ? "fill-amber-400 text-amber-400"
+                                : "fill-white/20 text-white/30"
                             }`}
                           />
                         ))}
                       </div>
                     </div>
 
-                    {/* Card Container */}
-                    <div className="relative w-[190px] sm:w-[220px] lg:w-[240px] xl:w-[260px] h-[280px] sm:h-[320px] lg:h-[360px] rounded-3xl overflow-hidden shadow-2xl shadow-black/60 border border-white/20 transition-all duration-300 group-hover/card:border-white/40 group-hover/card:shadow-black/80">
+                    {/* Card Container (No Border & No Shadow) */}
+                    <div className="relative w-[185px] sm:w-[215px] lg:w-[235px] xl:w-[250px] h-[270px] sm:h-[310px] lg:h-[350px] rounded-3xl overflow-hidden transition-all duration-500">
                       {/* Card Image */}
                       <Image
                         src={slide.thumbnailUrl}
                         alt={slide.name}
                         fill
-                        className="object-cover object-center group-hover/card:scale-105 transition-transform duration-700 ease-out"
-                        sizes="(max-width: 640px) 190px, (max-width: 1024px) 220px, 260px"
+                        className="object-cover object-center group-hover/card:scale-108 transition-transform duration-700 ease-out"
+                        sizes="(max-width: 640px) 185px, (max-width: 1024px) 215px, 250px"
                       />
 
-                      {/* Card gradient overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-black/20" />
+                      {/* Card Gradient Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent" />
 
                       {/* Top-Right Bookmark Button */}
                       <button
                         type="button"
                         onClick={(e) => toggleBookmark(e, slide.id)}
-                        className={`absolute top-3.5 right-3.5 w-9 h-9 rounded-full backdrop-blur-md flex items-center justify-center transition-all duration-200 border cursor-pointer ${
+                        className={`absolute top-3 right-3 w-8 h-8 rounded-full backdrop-blur-md flex items-center justify-center transition-all duration-200 border cursor-pointer ${
                           isSaved
-                            ? "bg-white text-orange-500 border-white shadow-md"
+                            ? "bg-white text-blue-600 border-white shadow-md"
                             : "bg-white/25 hover:bg-white/40 text-white border-white/30"
                         }`}
                         aria-label="Bookmark destination"
                         title={isSaved ? "Saved" : "Save destination"}
                       >
-                        <Bookmark className={`w-4 h-4 ${isSaved ? "fill-orange-500" : ""}`} />
+                        <Bookmark className={`w-3.5 h-3.5 ${isSaved ? "fill-blue-600" : ""}`} />
                       </button>
 
                       {/* Card Bottom Meta (Subtitle / Price / Duration) */}
-                      <div className="absolute bottom-4 left-4 right-4 text-white">
-                        <span className="text-[11px] font-medium uppercase tracking-wider text-white/70 block">
+                      <div className="absolute bottom-3.5 left-3.5 right-3.5 text-white">
+                        <span className="text-[10px] font-semibold uppercase tracking-wider text-white/70 block">
                           {slide.country}
                         </span>
-                        <div className="flex items-center justify-between mt-1">
-                          <span className="text-xs font-semibold text-white/90">
+                        <div className="flex items-center justify-between mt-0.5">
+                          <span className="text-xs font-medium text-white/90">
                             {slide.duration}
                           </span>
                           {slide.price && (
-                            <span className="text-xs font-bold text-amber-300">
+                            <span className="text-xs font-bold text-sky-300">
                               {slide.price}
                             </span>
                           )}
@@ -312,44 +293,30 @@ export const Hero: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
 
-      {/* ========================================================
-          4. BOTTOM NAVIGATION CONTROLS (ARROWS & PROGRESS INDICATOR)
-      ======================================================== */}
-      <div className="absolute bottom-7 left-28 sm:left-36 lg:left-44 right-6 sm:right-12 flex items-center justify-between z-30 pointer-events-auto">
-        {/* Navigation Arrows (Prev / Next) */}
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={prevSlide}
-            className="w-10 h-10 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white border border-white/20 transition-all duration-200 cursor-pointer shadow-md active:scale-95"
-            aria-label="Previous slide"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          <button
-            type="button"
-            onClick={nextSlide}
-            className="w-10 h-10 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white border border-white/20 transition-all duration-200 cursor-pointer shadow-md active:scale-95"
-            aria-label="Next slide"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-        </div>
-
-        {/* Bottom Right Slide Progress Bar / Counter */}
-        <div className="hidden sm:flex items-center gap-3 text-xs font-mono font-semibold tracking-wider text-white/75">
-          <span>{String(currentIndex + 1).padStart(2, "0")}</span>
-          <div className="w-20 sm:w-28 h-[2px] bg-white/20 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-white transition-all duration-500 ease-out"
-              style={{
-                width: `${((currentIndex + 1) / totalSlides) * 100}%`,
-              }}
-            />
+        {/* ========================================================
+            4. BOTTOM CONTROLS (NAVIGATION ARROWS ONLY)
+        ======================================================== */}
+        <div className="flex items-center justify-start pt-2 pointer-events-auto">
+          {/* Navigation Arrows (Prev / Next) */}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={prevSlide}
+              className="w-10 h-10 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white border border-white/20 transition-all duration-200 cursor-pointer shadow-md active:scale-95"
+              aria-label="Previous slide"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              type="button"
+              onClick={nextSlide}
+              className="w-10 h-10 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white border border-white/20 transition-all duration-200 cursor-pointer shadow-md active:scale-95"
+              aria-label="Next slide"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
-          <span>{String(totalSlides).padStart(2, "0")}</span>
         </div>
       </div>
     </section>

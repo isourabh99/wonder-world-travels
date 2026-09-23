@@ -3,19 +3,19 @@
 import React from "react";
 import Link from "next/link";
 import {
-  Headphones,
-  ShieldCheck,
-  Compass,
+  Award,
+  Users,
   Sparkles,
-  Crown,
-  HeartPulse,
+  Globe,
+  Building,
+  FileCheck,
   ArrowRight,
   CheckCircle2,
   PhoneCall,
-  Award,
-  Users,
+  MapPin,
 } from "lucide-react";
 import { WHY_CHOOSE_US_ITEMS, WhyChooseUsItem } from "@/data/why-choose-us";
+import { ShimmerButton } from "@/components/ui/button";
 
 interface WhyChooseUsProps {
   items?: WhyChooseUsItem[];
@@ -26,20 +26,20 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({
 }) => {
   const getIcon = (name: WhyChooseUsItem["iconName"]) => {
     switch (name) {
-      case "Crown":
-        return <Crown className="w-6 h-6 text-amber-500" />;
-      case "Headphones":
-        return <Headphones className="w-6 h-6 text-primary" />;
-      case "Compass":
-        return <Compass className="w-6 h-6 text-primary" />;
-      case "HeartPulse":
-        return <HeartPulse className="w-6 h-6 text-rose-500" />;
-      case "ShieldCheck":
-        return <ShieldCheck className="w-6 h-6 text-emerald-600" />;
+      case "Award":
+        return <Award className="w-6 h-6 text-sky-500" />;
+      case "Users":
+        return <Users className="w-6 h-6 text-primary" />;
       case "Sparkles":
-        return <Sparkles className="w-6 h-6 text-amber-500" />;
+        return <Sparkles className="w-6 h-6 text-sky-500" />;
+      case "Globe":
+        return <Globe className="w-6 h-6 text-primary" />;
+      case "Building":
+        return <Building className="w-6 h-6 text-sky-500" />;
+      case "FileCheck":
+        return <FileCheck className="w-6 h-6 text-primary" />;
       default:
-        return <Sparkles className="w-6 h-6 text-primary" />;
+        return <Award className="w-6 h-6 text-primary" />;
     }
   };
 
@@ -66,41 +66,41 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({
             </h2>
 
             <p className="text-muted text-base sm:text-lg leading-relaxed">
-              We do not offer rigid cookie-cutter packages. Every voyage is choreographed around your family’s comfort, security, and cherished aspirations.
+              We provide expert travel planning, smooth bookings, and reliable support with 100% transparency and complete customer satisfaction.
             </p>
           </div>
 
           {/* Quick Metrics Strip */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-gray-50/80 border border-border/80 p-3 sm:p-4 rounded-2xl shrink-0">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-50 border border-border/80 p-3 sm:p-4 rounded-2xl shrink-0">
             <div className="p-2 sm:p-3 text-center sm:text-left sm:border-r border-border/80">
               <span className="font-serif text-2xl sm:text-3xl font-bold text-primary block leading-none">
-                45K+
+                50K+
               </span>
-              <span className="text-[11px] text-muted font-medium mt-1 block">Happy Guests</span>
+              <span className="text-[11px] text-muted font-medium mt-1 block">Happy Customers</span>
             </div>
             <div className="p-2 sm:p-3 text-center sm:text-left sm:border-r border-border/80">
               <span className="font-serif text-2xl sm:text-3xl font-bold text-primary block leading-none">
-                14+
+                15+
               </span>
-              <span className="text-[11px] text-muted font-medium mt-1 block">Years of Trust</span>
+              <span className="text-[11px] text-muted font-medium mt-1 block">Years Experience</span>
             </div>
             <div className="p-2 sm:p-3 text-center sm:text-left sm:border-r border-border/80">
-              <span className="font-serif text-2xl sm:text-3xl font-bold text-primary block leading-none">
-                100%
+              <span className="font-serif text-xl sm:text-2xl font-bold text-primary block leading-none">
+                IATA
               </span>
-              <span className="text-[11px] text-muted font-medium mt-1 block">Govt. Verified</span>
+              <span className="text-[11px] text-muted font-medium mt-1 block">TIDS Certified</span>
             </div>
             <div className="p-2 sm:p-3 text-center sm:text-left">
-              <span className="font-serif text-2xl sm:text-3xl font-bold text-primary block leading-none">
-                99.4%
+              <span className="font-serif text-xl sm:text-2xl font-bold text-primary block leading-none">
+                GST
               </span>
-              <span className="text-[11px] text-muted font-medium mt-1 block">On-Time Trips</span>
+              <span className="text-[11px] text-muted font-medium mt-1 block">Registered Co.</span>
             </div>
           </div>
         </div>
 
         {/* ========================================================
-            2. 6-CARD VALUE PILLARS GRID (FULL DENSITY, LUXURY FEEL)
+            2. 6-CARD VALUE PILLARS GRID
         ======================================================== */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {items.map((item) => (
@@ -108,7 +108,7 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({
               key={item.id}
               className="group bg-white rounded-3xl border border-border/80 hover:border-primary/40 p-7 sm:p-8 flex flex-col justify-between shadow-xs hover:shadow-xl transition-all duration-300 relative overflow-hidden"
             >
-              {/* Subtle Card Header */}
+              {/* Card Content */}
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="w-14 h-14 rounded-2xl bg-primary/10 group-hover:bg-primary group-hover:text-white flex items-center justify-center transition-all duration-300 shadow-inner group-hover:scale-105">
@@ -129,7 +129,7 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({
                 </p>
               </div>
 
-              {/* Bottom Card Stat / CTA */}
+              {/* Bottom Card Stat */}
               <div className="pt-6 mt-6 border-t border-border/60 flex items-center justify-between">
                 {item.highlightStat ? (
                   <span className="text-xs font-bold text-primary flex items-center gap-1.5">
@@ -149,28 +149,30 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({
         {/* ========================================================
             3. LUXURY TRIP PLANNER CONCIERGE PROMISE STRIP
         ======================================================== */}
-        <div className="rounded-3xl bg-gray-50 border border-border/80 p-8 sm:p-10 flex flex-col lg:flex-row items-center justify-between gap-8 shadow-xs">
+        <div className="rounded-3xl bg-slate-50 border border-border/80 p-8 sm:p-10 flex flex-col lg:flex-row items-center justify-between gap-8 shadow-xs">
           <div className="space-y-2 max-w-2xl text-center lg:text-left">
-            <h4 className="font-serif text-xl sm:text-2xl font-bold text-foreground">
-              Ready to sculpt your next unforgettable holiday or sacred yatra?
+            <h4 className="font-serif text-xl sm:text-2xl font-bold text-foreground flex items-center justify-center lg:justify-start gap-2">
+              <MapPin className="w-5 h-5 text-primary shrink-0" />
+              <span>Visit Our Head Office at 23/21E, East Patel Nagar, N.D – 110008</span>
             </h4>
             <p className="text-sm text-muted leading-relaxed">
-              Connect with our master tour directors in Connaught Place, New Delhi. Complimentary consultation with custom route maps and day-by-day costing.
+              Connect directly with our master tour planners at 23/21E, East Patel Nagar, New Delhi for in-person consultation, customized route maps, and day-by-day itineraries.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-4 shrink-0">
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary hover:bg-primary-hover text-white text-sm font-bold shadow-md shadow-primary/20 transition-all cursor-pointer"
-            >
-              <PhoneCall className="w-4 h-4" />
-              <span>Request Bespoke Plan</span>
+            <Link href="/contact">
+              <ShimmerButton
+                size="lg"
+                icon={<PhoneCall className="w-4 h-4 text-white shrink-0" />}
+              >
+                Request Bespoke Plan
+              </ShimmerButton>
             </Link>
 
             <Link
               href="/about"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white hover:bg-gray-100 text-foreground border border-border text-sm font-semibold transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white hover:bg-gray-100 text-slate-800 border border-border text-sm font-semibold transition-all cursor-pointer"
             >
               <span>Our Heritage & Values</span>
               <ArrowRight className="w-4 h-4" />

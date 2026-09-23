@@ -2,19 +2,22 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { X, ChevronDown, Phone, Compass, ArrowRight } from "lucide-react";
+import Image from "next/image";
+import { X, ChevronDown, Phone, ArrowRight, Sparkles } from "lucide-react";
 import { NavItem } from "@/types/navigation";
-import { Button } from "@/components/ui/button";
+import { Button, ShimmerButton } from "@/components/ui/button";
 
 interface MobileDrawerProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpenEnquire?: () => void;
   navItems: NavItem[];
 }
 
 export const MobileDrawer: React.FC<MobileDrawerProps> = ({
   isOpen,
   onClose,
+  onOpenEnquire,
   navItems,
 }) => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -27,35 +30,37 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 lg:hidden">
-      {/* Backdrop */}
+      {/* Dimmed Overlay */}
       <div
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-slate-950/50 backdrop-blur-xs transition-opacity duration-300"
         onClick={onClose}
       />
 
-      {/* Slide-in Drawer */}
-      <div className="fixed inset-y-0 right-0 w-full max-w-sm bg-white shadow-2xl z-10 flex flex-col h-full animate-slide-down">
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-border">
-          <div className="flex items-center gap-2">
-            <span className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white">
-              <Compass className="w-4 h-4 animate-spin-slow" />
-            </span>
-            <span className="font-serif text-lg font-bold text-primary tracking-tight">
-              Wonder World
-            </span>
-          </div>
+      {/* Slide-in Mobile Drawer */}
+      <div className="fixed inset-y-0 right-0 w-full max-w-sm bg-white shadow-2xl z-50 flex flex-col h-full animate-slide-left border-l border-border">
+        {/* Header with logo.webp & Close Button */}
+        <div className="flex items-center justify-between flex-nowrap px-4 sm:px-6 py-3.5 border-b border-border bg-slate-50 shrink-0">
+          <Link href="/" onClick={onClose} className="flex items-center shrink-0">
+            <Image
+              src="/logo.webp"
+              alt="Wonder World Travels"
+              width={140}
+              height={45}
+              className="h-9 w-auto object-contain"
+            />
+          </Link>
           <button
+            type="button"
             onClick={onClose}
-            className="p-2 rounded-full hover:bg-gray-100 text-muted hover:text-foreground transition-colors"
-            aria-label="Close menu"
+            className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 hover:text-slate-950 transition-colors focus:outline-none shrink-0 cursor-pointer border border-slate-200 shadow-xs"
+            aria-label="Close navigation menu"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5 stroke-[2.5] text-slate-800" />
           </button>
         </div>
 
-        {/* Scrollable Nav Content */}
-        <div className="flex-1 overflow-y-auto px-6 py-4 divide-y divide-border/60">
+        {/* Scrollable Nav Items Accordion */}
+        <div className="flex-1 overflow-y-auto px-5 py-3 divide-y divide-border/60">
           {navItems.map((item) => {
             const isExpanded = expandedId === item.id;
             const hasChildren = item.hasMegaMenu && item.megaMenu;
@@ -66,7 +71,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                   <div>
                     <button
                       onClick={() => toggleAccordion(item.id)}
-                      className="flex items-center justify-between w-full py-2 text-left font-medium text-foreground hover:text-primary transition-colors text-base"
+                      className="flex items-center justify-between w-full py-2 text-left font-medium text-slate-800 hover:text-primary transition-colors text-base"
                     >
                       <span>{item.label}</span>
                       <ChevronDown
@@ -77,10 +82,10 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                     </button>
 
                     {isExpanded && item.megaMenu && (
-                      <div className="pl-3 pr-1 py-2 space-y-4 text-sm bg-gray-50/60 rounded-xl my-2 border border-border/50">
+                      <div className="pl-3 pr-2 py-3 space-y-4 text-sm bg-slate-50/80 rounded-2xl my-2 border border-border/60">
                         {item.megaMenu.columns.map((column, colIdx) => (
                           <div key={colIdx} className="space-y-1.5">
-                            <span className="text-[11px] font-bold uppercase tracking-wider text-primary">
+                            <span className="text-[11px] font-bold uppercase tracking-wider text-primary block">
                               {column.title}
                             </span>
                             <ul className="space-y-1 pl-1">
@@ -89,11 +94,11 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                                   <Link
                                     href={subItem.href}
                                     onClick={onClose}
-                                    className="flex items-center justify-between py-1 text-xs text-muted hover:text-primary transition-colors"
+                                    className="flex items-center justify-between py-1.5 text-xs text-slate-700 hover:text-primary font-medium transition-colors"
                                   >
                                     <span>{subItem.label}</span>
                                     {subItem.badge && (
-                                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary-light text-primary font-medium">
+                                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary-light text-primary font-semibold">
                                         {subItem.badge}
                                       </span>
                                     )}
@@ -108,12 +113,12 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                           <Link
                             href={item.megaMenu.promoCard.href}
                             onClick={onClose}
-                            className="block p-3 rounded-xl bg-white border border-border mt-3 shadow-xs"
+                            className="block p-3 rounded-xl bg-white border border-border mt-2 shadow-xs hover:border-primary/40 transition-colors"
                           >
                             <span className="text-[10px] uppercase font-bold text-primary block">
                               Featured Deal
                             </span>
-                            <p className="text-xs font-semibold text-foreground mt-0.5 line-clamp-1">
+                            <p className="text-xs font-semibold text-slate-900 mt-0.5 line-clamp-1">
                               {item.megaMenu.promoCard.title}
                             </p>
                             <span className="text-xs text-primary font-medium inline-flex items-center gap-1 mt-1">
@@ -128,7 +133,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                   <Link
                     href={item.href}
                     onClick={onClose}
-                    className="block py-2 text-base font-medium text-foreground hover:text-primary transition-colors"
+                    className="block py-2 text-base font-medium text-slate-800 hover:text-primary transition-colors"
                   >
                     {item.label}
                   </Link>
@@ -138,21 +143,23 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
           })}
         </div>
 
-        {/* Footer Actions */}
-        <div className="p-6 border-t border-border bg-gray-50/80 space-y-3">
-          <div className="flex items-center gap-3 text-xs text-muted">
+        {/* Footer Helpline & Enquire CTA */}
+        <div className="p-5 border-t border-border bg-slate-50 space-y-3">
+          <div className="flex items-center gap-2.5 text-xs text-slate-600">
             <Phone className="w-4 h-4 text-primary shrink-0" />
-            <span>24/7 Helpline: <strong>+91 98765 43210</strong></span>
+            <span>24/7 Helpline: <a href="tel:+918588824351" className="font-bold text-slate-900 hover:text-primary transition-colors">+91 85888-24351</a></span>
           </div>
 
-          <Button
-            variant="primary"
+          <ShimmerButton
+            fullWidth
             size="lg"
-            className="w-full justify-center"
-            onClick={onClose}
+            onClick={() => {
+              if (onOpenEnquire) onOpenEnquire();
+              else onClose();
+            }}
           >
-            Plan My Trip
-          </Button>
+            Enquire Now
+          </ShimmerButton>
         </div>
       </div>
     </div>

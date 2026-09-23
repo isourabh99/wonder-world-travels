@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { TESTIMONIALS } from "@/data/testimonials";
 import { Testimonial } from "@/types/testimonial";
+import { ShimmerButton } from "@/components/ui/button";
 
 interface TestimonialsProps {
   testimonials?: Testimonial[];
@@ -53,7 +54,7 @@ export const Testimonials: React.FC<TestimonialsProps> = ({
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
           <div className="space-y-4 max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold tracking-wider uppercase">
-              <Sparkles className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+              <Sparkles className="w-3.5 h-3.5 text-primary fill-primary" />
               <span>Verified Traveler Stories</span>
             </div>
 
@@ -150,7 +151,7 @@ export const Testimonials: React.FC<TestimonialsProps> = ({
                       <span className="line-clamp-1 font-medium">{story.tourTaken}</span>
                     </div>
                     {story.highlight && (
-                      <p className="text-xs font-bold text-amber-300 line-clamp-1">
+                      <p className="text-xs font-bold text-sky-300 line-clamp-1">
                         ★ {story.highlight}
                       </p>
                     )}
@@ -195,7 +196,9 @@ export const Testimonials: React.FC<TestimonialsProps> = ({
                           {story.name}
                         </h4>
                         {story.verified && (
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" title="Verified Traveler" />
+                          <span title="Verified Traveler">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                          </span>
                         )}
                       </div>
                       <div className="flex items-center gap-2 text-[11px] text-muted mt-0.5">
@@ -243,10 +246,13 @@ export const Testimonials: React.FC<TestimonialsProps> = ({
             href="https://google.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary hover:bg-primary-hover text-white text-xs sm:text-sm font-bold shadow-md shadow-primary/20 transition-all shrink-0 cursor-pointer"
           >
-            <span>Read All Google Reviews</span>
-            <ChevronRight className="w-4 h-4" />
+            <ShimmerButton
+              size="md"
+              icon={<ChevronRight className="w-4 h-4 text-white shrink-0" />}
+            >
+              Read All Google Reviews
+            </ShimmerButton>
           </a>
         </div>
 

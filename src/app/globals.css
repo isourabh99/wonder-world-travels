@@ -85,7 +85,7 @@
 @keyframes textSlideUp {
   0% {
     opacity: 0;
-    transform: translateY(45px);
+    transform: translateY(65px);
   }
   100% {
     opacity: 1;
@@ -94,17 +94,18 @@
 }
 
 .animate-slide-up-1 {
-  animation: textSlideUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+  animation: textSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.05s forwards;
 }
 
 .animate-slide-up-2 {
   opacity: 0;
-  animation: textSlideUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.14s forwards;
+  animation: textSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.18s forwards;
 }
 
 .animate-slide-up-3 {
   opacity: 0;
-  animation: textSlideUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.28s forwards;
+  animation: textSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.32s forwards;
 }
 
 /* Timeline Active Dot Blinking and Expanding Pulse */
@@ -144,3 +145,25 @@
 .animate-marquee:hover {
   animation-play-state: paused;
 }
+
+/* Animated Shimmer Button Sweep */
+@keyframes shimmerGlow {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer-btn {
+  background: linear-gradient(110deg, #0D58A5 0%, #0284c7 30%, #0D58A5 60%, #0369a1 100%);
+  background-size: 200% 100%;
+  animation: shimmerGlow 3.5s linear infinite;
+}
+
+.animate-shimmer-btn:hover {
+  animation-duration: 1.8s;
+  box-shadow: 0 4px 22px -2px rgba(13, 88, 165, 0.5);
+}
+

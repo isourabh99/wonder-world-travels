@@ -1,6 +1,6 @@
 export interface WhyChooseUsItem {
   id: string;
-  iconName: "ShieldCheck" | "Headphones" | "Compass" | "Sparkles" | "Crown" | "HeartPulse";
+  iconName: "Award" | "Users" | "Sparkles" | "Globe" | "Building" | "FileCheck";
   title: string;
   description: string;
   badge: string;
@@ -9,57 +9,57 @@ export interface WhyChooseUsItem {
 
 export const WHY_CHOOSE_US_ITEMS: WhyChooseUsItem[] = [
   {
-    id: "vip-access",
-    iconName: "Crown",
-    title: "VIP & Priority Access",
+    id: "iata-certification",
+    iconName: "Award",
+    title: "IATA TIDS Certification!",
     description:
-      "Skip queues with helicopter charters, fast-track VIP temple darshan passes at Kedarnath & Kashi, and private off-hours royal palace entries.",
-    badge: "Exclusive Privileges",
-    highlightStat: "Zero-Queue Darshan",
+      "Wonder World Travels is IATA TIDS certified, ensuring trusted global travel services with verified code and smooth booking experience for all customers.",
+    badge: "Verified Global Code",
+    highlightStat: "IATA TIDS Certified",
   },
   {
-    id: "support",
-    iconName: "Headphones",
-    title: "24/7 Dedicated Concierge",
+    id: "50k-customers",
+    iconName: "Users",
+    title: "50k Customers!",
     description:
-      "A personal trip director handles every logistical detail on WhatsApp from touchdown to takeoff, with proactive flight monitoring and table bookings.",
-    badge: "Personal Care",
-    highlightStat: "15-Min Response Guarantee",
+      "We have successfully served over 50,000 happy customers, delivering memorable travel experiences with trust, quality service, and complete customer satisfaction always.",
+    badge: "Trusted Choice",
+    highlightStat: "50,000+ Happy Guests",
   },
   {
-    id: "curation",
-    iconName: "Compass",
-    title: "Bespoke Handcrafted Itineraries",
-    description:
-      "Zero rigid cookie-cutter tours. Every single journey is custom designed by native specialists around your family's pace, tastes, and comfort.",
-    badge: "100% Tailored",
-    highlightStat: "Personalized Daily Pace",
-  },
-  {
-    id: "safety",
-    iconName: "HeartPulse",
-    title: "Medical & High-Altitude Safety",
-    description:
-      "Doctor-on-call network, oxygen backup, acclimatization protocols for Char Dham & Ladakh, and round-the-clock emergency medical assistance.",
-    badge: "Health & Peace of Mind",
-    highlightStat: "Medical Standby Support",
-  },
-  {
-    id: "protection",
-    iconName: "ShieldCheck",
-    title: "100% Financial Protection",
-    description:
-      "Government of India Ministry of Tourism recognized and IATA accredited. Enjoy transparent pricing with no hidden fees and flexible cancellation.",
-    badge: "Govt. Accredited",
-    highlightStat: "Insured Bookings",
-  },
-  {
-    id: "guides",
+    id: "15-years-experience",
     iconName: "Sparkles",
-    title: "Handpicked Stays & Certified Guides",
+    title: "15 Years+ Experience !",
     description:
-      "Stay in personally inspected 5-star palace hotels, private houseboats, and luxury tents, guided by top accredited historians and cultural storytellers.",
-    badge: "Inspected in Person",
-    highlightStat: "5-Star & Heritage Stays",
+      "Backed by more than 15 years of experience, we provide expert travel planning, smooth bookings, and reliable support for every journey with wonder world travels",
+    badge: "Industry Pioneer",
+    highlightStat: "15+ Years Excellence",
+  },
+  {
+    id: "globally-operate",
+    iconName: "Globe",
+    title: "Globally Operate!",
+    description:
+      "We operate globally, offering customized travel solutions across countries to make your journeys easy, comfortable, and perfectly suited to your needs.",
+    badge: "Worldwide Reach",
+    highlightStat: "International Tours",
+  },
+  {
+    id: "own-office",
+    iconName: "Building",
+    title: "Our own Office",
+    description:
+      "We have a dedicated office at 23/21E, East Patel Nagar, N.D – 110008 ensuring direct communication, quick support, and a smooth hassle-free travel planning experience.",
+    badge: "Direct Consultation",
+    highlightStat: "23/21E East Patel Nagar HQ",
+  },
+  {
+    id: "gst-registered",
+    iconName: "FileCheck",
+    title: "GST Registered!",
+    description:
+      "We are a GST registered travel company ensuring transparency, trust, and compliance in every transaction with complete billing safety for customers.",
+    badge: "100% Tax Compliant",
+    highlightStat: "Transparent Billing",
   },
 ];

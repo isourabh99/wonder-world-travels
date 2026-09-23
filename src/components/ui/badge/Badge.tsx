@@ -24,7 +24,7 @@ export const Badge: React.FC<BadgeProps> = ({
     primary: "bg-primary text-white",
     light: "bg-primary-light text-primary border border-primary/10",
     outline: "border border-border text-foreground bg-white/80",
-    gold: "bg-amber-50 text-amber-700 border border-amber-200",
+    gold: "bg-sky-50 text-sky-700 border border-sky-200",
     success: "bg-emerald-50 text-emerald-700 border border-emerald-200",
   };
 
