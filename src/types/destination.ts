@@ -4,6 +4,7 @@ export interface Destination {
   country: string;
   region: string;
   imageUrl: string;
+  videoUrl?: string;
   toursCount: number;
   featured?: boolean;
   tag?: string;
