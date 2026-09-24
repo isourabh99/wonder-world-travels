@@ -26,11 +26,115 @@ export const Hero: React.FC = () => {
   const [bookmarkedIds, setBookmarkedIds] = useState<Record<string, boolean>>(
     {},
   );
-  const [touchStartX, setTouchStartX] = useState<number | null>(null);
-  const [touchEndX, setTouchEndX] = useState<number | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartXRef = React.useRef(0);
+  const dragMovedRef = React.useRef(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const totalSlides = HERO_SLIDES.length;
   const currentSlide = HERO_SLIDES[currentIndex];
+
+  // 3D Cylindrical coordinates calculation
+  const getCard3DStyle = (idx: number, isMob: boolean) => {
+    let diff = idx - currentIndex;
+    if (diff > totalSlides / 2) diff -= totalSlides;
+    if (diff < -totalSlides / 2) diff += totalSlides;
+
+    const absDiff = Math.abs(diff);
+
+    // Hide cards that are far behind to maintain silky 60fps and clear perspective
+    if (absDiff > 3) {
+      return {
+        transform: `translateX(${diff > 0 ? (isMob ? 210 : 420) : (isMob ? -210 : -420)}px) translateZ(-320px) rotateY(${diff > 0 ? -70 : 70}deg) scale(0.4)`,
+        opacity: 0,
+        zIndex: 0,
+        pointerEvents: "none" as const,
+        visibility: "hidden" as const,
+      };
+    }
+
+    let x = 0;
+    let z = 0;
+    let rotateY = 0;
+    let scale = 1;
+    let opacity = 1;
+    let zIndex = 30;
+    let brightness = 1;
+
+    if (diff === 0) {
+      // FRONT ACTIVE CARD (Center stage, scaled up)
+      x = 0;
+      z = isMob ? 35 : 70;
+      rotateY = 0;
+      scale = isMob ? 1.05 : 1.1;
+      opacity = 1;
+      zIndex = 30;
+      brightness = 1;
+    } else if (diff === 1) {
+      // RIGHT 1 (Flanking right in cylinder)
+      x = isMob ? 95 : 190;
+      z = isMob ? -40 : -75;
+      rotateY = isMob ? -22 : -28;
+      scale = isMob ? 0.84 : 0.88;
+      opacity = isMob ? 0.78 : 0.88;
+      zIndex = 20;
+      brightness = 0.88;
+    } else if (diff === -1) {
+      // LEFT 1 (Flanking left in cylinder)
+      x = isMob ? -95 : -190;
+      z = isMob ? -40 : -75;
+      rotateY = isMob ? 22 : 28;
+      scale = isMob ? 0.84 : 0.88;
+      opacity = isMob ? 0.78 : 0.88;
+      zIndex = 20;
+      brightness = 0.88;
+    } else if (diff === 2) {
+      // RIGHT 2 (Peeche right)
+      x = isMob ? 165 : 330;
+      z = isMob ? -100 : -170;
+      rotateY = isMob ? -38 : -48;
+      scale = isMob ? 0.68 : 0.74;
+      opacity = isMob ? 0.45 : 0.6;
+      zIndex = 10;
+      brightness = 0.7;
+    } else if (diff === -2) {
+      // LEFT 2 (Peeche left)
+      x = isMob ? -165 : -330;
+      z = isMob ? -100 : -170;
+      rotateY = isMob ? 38 : 48;
+      scale = isMob ? 0.68 : 0.74;
+      opacity = isMob ? 0.45 : 0.6;
+      zIndex = 10;
+      brightness = 0.7;
+    } else if (absDiff === 3) {
+      // PEECHE (Back center-depth)
+      x = diff > 0 ? (isMob ? 200 : 410) : (isMob ? -200 : -410);
+      z = isMob ? -160 : -250;
+      rotateY = diff > 0 ? -55 : 55;
+      scale = isMob ? 0.52 : 0.6;
+      opacity = isMob ? 0.2 : 0.3;
+      zIndex = 5;
+      brightness = 0.5;
+    }
+
+    return {
+      transform: `translateX(${x}px) translateZ(${z}px) rotateY(${rotateY}deg) scale(${scale})`,
+      opacity,
+      zIndex,
+      filter: `brightness(${brightness})`,
+      pointerEvents: (absDiff <= 2 ? "auto" : "none") as "auto" | "none",
+      visibility: "visible" as const,
+    };
+  };
 
   // Advance to next slide
   const nextSlide = useCallback(() => {
@@ -56,26 +160,45 @@ export const Hero: React.FC = () => {
     }));
   };
 
-  // Mobile swipe gestures
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStartX(e.targetTouches[0].clientX);
-    setTouchEndX(null);
+  // Mouse Drag / Grab & Touch Swipe handlers
+  const handlePointerDown = (e: React.PointerEvent) => {
+    setIsDragging(true);
+    dragStartXRef.current = e.clientX;
+    dragMovedRef.current = false;
   };
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEndX(e.targetTouches[0].clientX);
-  };
-
-  const handleTouchEnd = () => {
-    if (touchStartX === null || touchEndX === null) return;
-    const distance = touchStartX - touchEndX;
-    const isLeftSwipe = distance > 40;
-    const isRightSwipe = distance < -40;
-    if (isLeftSwipe) {
-      nextSlide();
-    } else if (isRightSwipe) {
-      prevSlide();
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!isDragging) return;
+    const diff = e.clientX - dragStartXRef.current;
+    if (Math.abs(diff) > 8) {
+      dragMovedRef.current = true;
     }
+  };
+
+  const handlePointerUp = (e: React.PointerEvent) => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    const diff = e.clientX - dragStartXRef.current;
+    if (Math.abs(diff) > 40) {
+      if (diff < 0) {
+        nextSlide();
+      } else {
+        prevSlide();
+      }
+    }
+  };
+
+  const handlePointerCancel = () => {
+    setIsDragging(false);
+  };
+
+  const handleCardClick = (e: React.MouseEvent, idx: number) => {
+    if (dragMovedRef.current) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+    goToSlide(idx);
   };
 
   // Automatic slide rotation every 4.5 seconds
@@ -244,200 +367,108 @@ export const Hero: React.FC = () => {
             </div>
           </div>
 
-          {/* MOBILE VIEW: ONLY ACTIVE SLIDE IN VIEW WIDTH (Horizontal Slide Transition on Small Screens) */}
+          {/* 3D CYLINDRICAL SPINNER CAROUSEL (Active Front, Left/Right/Behind in 3D Cylinder) */}
           <div
-            className="lg:hidden w-full pointer-events-auto mt-2"
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
+            className={`w-full lg:col-span-7 xl:col-span-7 flex items-center justify-center relative pointer-events-auto mt-2 sm:mt-4 lg:mt-0 select-none overflow-visible touch-pan-y ${
+              isDragging ? "cursor-grabbing" : "cursor-grab"
+            }`}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerCancel={handlePointerCancel}
+            onPointerLeave={handlePointerCancel}
           >
-            <div className="overflow-hidden w-full rounded-2xl">
-              <div
-                className="flex transition-transform duration-500 ease-out"
-                style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-              >
-                {HERO_SLIDES.map((slide, idx) => {
-                  const isSaved = Boolean(bookmarkedIds[slide.id]);
-
-                  return (
-                    <div
-                      key={`mobile-card-${slide.id}`}
-                      className="w-full flex-shrink-0 px-0.5"
-                    >
-                      {/* Destination Title & Stars Above Card */}
-                      <div className="mb-1 px-1 flex items-center justify-between">
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-xs xs:text-sm font-bold text-sky-300 truncate max-w-[190px]">
-                            {slide.location || slide.name}
-                          </span>
-                          <span className="text-[8px] xs:text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-md bg-sky-400 text-slate-950 shadow-sm shrink-0">
-                            Active
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-0.5">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`w-2.5 h-2.5 xs:w-3 xs:h-3 ${
-                                i < (slide.rating || 5)
-                                  ? "fill-amber-400 text-amber-400"
-                                  : "fill-white/20 text-white/30"
-                              }`}
-                            />
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Card Container */}
-                      <div className="relative w-full h-[300px] xs:h-[175px] rounded-2xl overflow-hidden border border-white/10 shadow-lg">
-                        <Image
-                          src={slide.thumbnailUrl}
-                          alt={slide.name}
-                          fill
-                          className="object-cover object-center"
-                          sizes="(max-width: 640px) 100vw, 380px"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent" />
-
-                        {/* Top-Right Bookmark Button */}
-                        <button
-                          type="button"
-                          onClick={(e) => toggleBookmark(e, slide.id)}
-                          className={`absolute top-2 right-2 w-7 h-7 rounded-full backdrop-blur-md flex items-center justify-center transition-all duration-200 border cursor-pointer ${
-                            isSaved
-                              ? "bg-white text-blue-600 border-white shadow-md"
-                              : "bg-white/25 hover:bg-white/40 text-white border-white/30"
-                          }`}
-                          aria-label="Bookmark destination"
-                        >
-                          <Bookmark
-                            className={`w-3.5 h-3.5 ${isSaved ? "fill-blue-600" : ""}`}
-                          />
-                        </button>
-
-                        {/* Card Bottom Meta */}
-                        <div className="absolute bottom-2.5 left-3 right-3 text-white flex items-center justify-between">
-                          <div>
-                            <span className="text-[9px] xs:text-[10px] font-semibold uppercase tracking-wider text-sky-400 block truncate">
-                              {slide.country}
-                            </span>
-                            <span className="text-xs font-medium text-white/90">
-                              {slide.duration}
-                            </span>
-                          </div>
-                          {slide.price && (
-                            <div className="text-right">
-                              <span className="text-[9px] text-white/60 block">
-                                From
-                              </span>
-                              <span className="text-xs xs:text-sm font-bold text-sky-300">
-                                {slide.price}
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
-          {/* DESKTOP ONLY: MULTI-CARD QUEUE TRACK (Visible on lg+) */}
-          <div className="hidden lg:flex lg:col-span-7 xl:col-span-7 flex-col justify-center relative overflow-visible pointer-events-auto">
-            {/* Horizontal Cards Track */}
-            <div className="flex items-center gap-5 overflow-x-hidden py-6 -mr-10 lg:-mr-14 pl-2">
-              {carouselCards.map(({ slide, originalIndex }, queuePos) => {
-                const isActiveCard = originalIndex === currentIndex;
+            <div className="relative w-full h-[230px] xs:h-[260px] sm:h-[310px] lg:h-[390px] xl:h-[430px] flex items-center justify-center [perspective:1000px] lg:[perspective:1400px] [transform-style:preserve-3d] overflow-visible">
+              {HERO_SLIDES.map((slide, idx) => {
+                const style3D = getCard3DStyle(idx, isMobile);
+                const isActive = idx === currentIndex;
                 const isSaved = Boolean(bookmarkedIds[slide.id]);
 
                 return (
                   <div
-                    key={`${slide.id}-${originalIndex}`}
-                    onClick={() => goToSlide(originalIndex)}
-                    className={`flex-shrink-0 flex flex-col cursor-pointer group/card transition-all duration-500 ${
-                      isActiveCard
-                        ? "scale-105 sm:scale-108 z-20 opacity-100"
-                        : "scale-95 opacity-75 hover:opacity-100 hover:scale-100 z-10"
+                    key={`cylinder-card-${slide.id}`}
+                    onClick={(e) => handleCardClick(e, idx)}
+                    style={style3D}
+                    className={`absolute transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] will-change-transform ${
+                      isActive ? "z-30" : "hover:brightness-110"
                     }`}
                   >
-                    {/* Destination Title & Stars Above Card */}
-                    <div className="mb-2 px-1 flex flex-col gap-1">
-                      <div className="flex items-center justify-between gap-2 max-w-[200px] sm:max-w-[240px]">
-                        <span
-                          className={`text-xs sm:text-sm font-bold truncate ${
-                            isActiveCard
-                              ? "text-sky-300 drop-shadow-md"
-                              : "text-white/90"
-                          }`}
-                        >
-                          {slide.location || slide.name}
-                        </span>
-                        {isActiveCard && (
-                          <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-md bg-sky-400 text-slate-950 shadow-sm shrink-0">
-                            Active
-                          </span>
-                        )}
-                      </div>
-
-                      {/* 5-Star Rating Icons (Golden) */}
-                      <div className="flex items-center gap-0.5">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`w-3.5 h-3.5 ${
-                              i < (slide.rating || 5)
-                                ? "fill-amber-400 text-amber-400"
-                                : "fill-white/20 text-white/30"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Card Container */}
-                    <div className="relative w-[215px] lg:w-[235px] xl:w-[250px] h-[300px] lg:h-[350px] rounded-3xl overflow-hidden transition-all duration-500">
+                    {/* The Card Container - NO BORDER & NO SHADOW */}
+                    <div
+                      className={`relative w-[145px] xs:w-[165px] sm:w-[210px] lg:w-[235px] xl:w-[255px] h-[190px] xs:h-[215px] sm:h-[280px] lg:h-[330px] xl:h-[365px] rounded-2xl sm:rounded-3xl overflow-hidden transition-all duration-500 ${
+                        isActive ? "opacity-100" : "opacity-90"
+                      }`}
+                    >
                       {/* Card Image */}
                       <Image
                         src={slide.thumbnailUrl}
                         alt={slide.name}
                         fill
-                        className="object-cover object-center group-hover/card:scale-108 transition-transform duration-700 ease-out"
-                        sizes="(max-width: 1024px) 215px, 250px"
+                        className="object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out"
+                        sizes="(max-width: 640px) 170px, (max-width: 1024px) 210px, 255px"
                       />
 
-                      {/* Card Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent" />
+                      {/* Gradient Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/25 to-transparent" />
 
-                      {/* Top-Right Bookmark Button */}
-                      <button
-                        type="button"
-                        onClick={(e) => toggleBookmark(e, slide.id)}
-                        className={`absolute top-3 right-3 w-8 h-8 rounded-full backdrop-blur-md flex items-center justify-center transition-all duration-200 border cursor-pointer ${
-                          isSaved
-                            ? "bg-white text-blue-600 border-white shadow-md"
-                            : "bg-white/25 hover:bg-white/40 text-white border-white/30"
-                        }`}
-                        aria-label="Bookmark destination"
-                        title={isSaved ? "Saved" : "Save destination"}
-                      >
-                        <Bookmark
-                          className={`w-3.5 h-3.5 ${isSaved ? "fill-blue-600" : ""}`}
-                        />
-                      </button>
+                      {/* Top Bar: Title & Active Badge / Bookmark */}
+                      <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none">
+                        {isActive ? (
+                          <span className="text-[8px] xs:text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-md bg-sky-400 text-slate-950">
+                            Active
+                          </span>
+                        ) : (
+                          <span className="text-[9px] xs:text-[10px] font-bold text-white/80 bg-black/40 backdrop-blur-md px-1.5 py-0.5 rounded-md truncate max-w-[100px]">
+                            {slide.location || slide.name}
+                          </span>
+                        )}
 
-                      {/* Card Bottom Meta */}
-                      <div className="absolute bottom-3.5 left-3.5 right-3.5 text-white">
-                        <span className="text-[10px] font-semibold uppercase tracking-wider text-white/70 block">
-                          {slide.country}
-                        </span>
-                        <div className="flex items-center justify-between mt-0.5">
-                          <span className="text-xs font-medium text-white/90">
-                            {slide.duration}
+                        {/* Bookmark Button */}
+                        <button
+                          type="button"
+                          onClick={(e) => toggleBookmark(e, slide.id)}
+                          className={`w-6 h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 rounded-full backdrop-blur-md flex items-center justify-center transition-all duration-200 cursor-pointer pointer-events-auto ${
+                            isSaved
+                              ? "bg-white text-blue-600"
+                              : "bg-white/25 hover:bg-white/40 text-white"
+                          }`}
+                          aria-label="Bookmark destination"
+                          title={isSaved ? "Saved" : "Save destination"}
+                        >
+                          <Bookmark
+                            className={`w-3 h-3 xs:w-3.5 xs:h-3.5 ${isSaved ? "fill-blue-600" : ""}`}
+                          />
+                        </button>
+                      </div>
+
+                      {/* Bottom Meta */}
+                      <div className="absolute bottom-2.5 left-2.5 right-2.5 sm:bottom-3.5 sm:left-3.5 sm:right-3.5 text-white">
+                        {/* Destination Title & Stars */}
+                        <div className="mb-1">
+                          <span className="text-xs xs:text-sm sm:text-base font-bold text-white block truncate">
+                            {slide.location || slide.name}
+                          </span>
+                          <div className="flex items-center gap-0.5 mt-0.5">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                className={`w-2.5 h-2.5 sm:w-3 sm:h-3 ${
+                                  i < (slide.rating || 5)
+                                    ? "fill-amber-400 text-amber-400"
+                                    : "fill-white/20 text-white/30"
+                                }`}
+                              />
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Country, Duration, Price */}
+                        <div className="flex items-center justify-between text-[9px] xs:text-[10px] sm:text-xs text-white/80 pt-1">
+                          <span className="font-semibold uppercase tracking-wider text-sky-300 truncate max-w-[90px]">
+                            {slide.country}
                           </span>
                           {slide.price && (
-                            <span className="text-xs font-bold text-sky-300">
+                            <span className="font-bold text-white">
                               {slide.price}
                             </span>
                           )}
@@ -452,30 +483,13 @@ export const Hero: React.FC = () => {
         </div>
 
         {/* ========================================================
-            4. BOTTOM CONTROLS (NAVIGATION ARROWS & SLIDE COUNTER)
+            4. BOTTOM CONTROLS (NAVIGATION ARROWS ON RIGHT)
         ======================================================== */}
-        <div className="flex items-center justify-start pt-1.5 sm:pt-2 pointer-events-auto">
-          {/* Navigation Arrows (Prev / Next) */}
+        <div className="flex items-center justify-end pt-1.5 sm:pt-2 pointer-events-auto">
+          {/* Navigation Arrows (Prev / Next) on Right */}
           <div className="flex items-center gap-2.5 sm:gap-3">
-            <button
-              type="button"
-              onClick={prevSlide}
-              className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white border border-white/20 transition-all duration-200 cursor-pointer shadow-md active:scale-95"
-              aria-label="Previous slide"
-            >
-              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
-            <button
-              type="button"
-              onClick={nextSlide}
-              className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white border border-white/20 transition-all duration-200 cursor-pointer shadow-md active:scale-95"
-              aria-label="Next slide"
-            >
-              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
-
             {/* Mobile Slide Counter */}
-            <div className="flex items-center gap-1 ml-1.5 sm:hidden">
+            <div className="flex items-center gap-1 mr-1.5 sm:hidden">
               <span className="text-[11px] font-bold text-sky-300">
                 {String(currentIndex + 1).padStart(2, "0")}
               </span>
@@ -484,6 +498,23 @@ export const Hero: React.FC = () => {
                 {String(totalSlides).padStart(2, "0")}
               </span>
             </div>
+
+            <button
+              type="button"
+              onClick={prevSlide}
+              className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white border border-white/20 transition-all duration-200 cursor-pointer active:scale-95"
+              aria-label="Previous slide"
+            >
+              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+            </button>
+            <button
+              type="button"
+              onClick={nextSlide}
+              className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/15 hover:bg-white/30 backdrop-blur-md flex items-center justify-center text-white border border-white/20 transition-all duration-200 cursor-pointer active:scale-95"
+              aria-label="Next slide"
+            >
+              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+            </button>
           </div>
         </div>
       </div>
