@@ -195,44 +195,46 @@ export const Testimonials: React.FC<TestimonialsProps> = ({
                 </div>
 
                 {/* Bottom: Author / Guest Card */}
-                <div className="pt-4 border-t border-border/70 flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-primary/20 shrink-0">
+                <div className="pt-4 border-t border-border/70 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="relative w-11 h-11 rounded-full overflow-hidden border-2 border-primary/20 shrink-0">
                       <Image
                         src={story.avatarUrl}
                         alt={story.name}
                         fill
                         className="object-cover"
-                        sizes="48px"
+                        sizes="44px"
                       />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <div className="flex items-center gap-1.5">
-                        <h4 className="font-bold text-foreground text-sm leading-tight">
+                        <h4 className="font-bold text-foreground text-sm leading-snug">
                           {story.name}
                         </h4>
                         {story.verified && (
-                          <span title="Verified Traveler">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                          <span title="Verified Traveler" className="inline-flex shrink-0">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                           </span>
                         )}
                       </div>
-                      <div className="flex items-center gap-2 text-[11px] text-muted mt-0.5">
-                        <span className="flex items-center gap-1">
-                          <MapPin className="w-3 h-3 text-primary" />
-                          {story.location}
+                      <div className="flex items-center gap-1.5 text-[11px] text-muted mt-0.5">
+                        <span className="inline-flex items-center gap-1 shrink-0">
+                          <MapPin className="w-3 h-3 text-primary shrink-0" />
+                          <span>{story.location}</span>
                         </span>
-                        <span>•</span>
-                        <span>{story.date}</span>
+                        <span className="text-muted/60">•</span>
+                        <span className="shrink-0">{story.date}</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Persona Tag */}
                   {story.travelerType && (
-                    <span className="text-[10px] font-semibold text-primary bg-primary/10 px-2.5 py-1 rounded-full shrink-0">
-                      {story.travelerType}
-                    </span>
+                    <div className="pl-14 sm:pl-0 self-start sm:self-center shrink-0">
+                      <span className="text-[10px] font-semibold text-primary bg-primary/10 px-2.5 py-1 rounded-full whitespace-nowrap inline-block">
+                        {story.travelerType}
+                      </span>
+                    </div>
                   )}
                 </div>
               </div>
